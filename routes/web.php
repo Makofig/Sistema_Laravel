@@ -31,9 +31,9 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/accessPoint', function () {
-        return view('accessPoint');
-    })->name('accessPoint');
+    Route::get('/access-point', function () {
+        return view('access-point');
+    })->name('access-point');
 });
 
 Route::middleware([
@@ -54,6 +54,16 @@ Route::middleware([
     Route::get('/quota', function () {
         return view('quota');
     })->name('quota');
+});
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->group(function () {
+    Route::get('/debtors', function () {
+        return view('debtors');
+    })->name('debtors');
 });
 
 Route::middleware([
