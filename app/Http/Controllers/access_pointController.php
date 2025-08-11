@@ -2,21 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Client;
+use App\Models\Access_Point;
 use Illuminate\Http\Request;
 
-class clientController extends Controller
+class access_pointController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        // obtener todos los clientes 
-        $clientes = Client::all(); 
-
-        // Pasar los cliente a la vista 
-        return view('clients.index', compact('clientes'));
+        // Mostrar todos los puntos de acceso
+        $points = Access_Point::all(); 
+        return view('access_point.index', compact('points'));
     }
 
     /**

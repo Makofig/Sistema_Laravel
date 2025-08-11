@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Quota;
 use Illuminate\Http\Request;
 
 class quotaController extends Controller
@@ -11,7 +12,11 @@ class quotaController extends Controller
      */
     public function index()
     {
-        //
+        // traer todas las cuotas y ordenar 
+        // sortBy ordena en memoria 
+        //$quotas = Quota::all()->sortBy('created_at');
+        $quotas = Quota::orderBy('created_at', 'desc')->get();
+        return view('quota.index', compact('quotas'));
     }
 
     /**

@@ -2,6 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 
+// Import controladores 
+use App\Http\Controllers\clientController; 
+use App\Http\Controllers\contractController;
+use App\Http\Controllers\access_pointController;
+use App\Http\Controllers\quotaController;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -21,9 +27,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/clients', function () {
-        return view('clients');
-    })->name('clients');
+    Route::get('/clients', [clientController::class, 'index'])->name('clients');
 });
 
 Route::middleware([
@@ -31,9 +35,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/access-point', function () {
-        return view('access-point');
-    })->name('access-point');
+    Route::get('/access-point', [access_pointController::class, 'index'])->name('access-point');
 });
 
 Route::middleware([
@@ -41,9 +43,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/contracts', function () {
-        return view('contracts');
-    })->name('contracts');
+    Route::get('/contracts', [contractController::class, 'index'])->name('contracts');
 });
 
 Route::middleware([
@@ -51,9 +51,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/quota', function () {
-        return view('quota');
-    })->name('quota');
+    Route::get('/quota', [quotaController::class, 'index'])->name('quota');
 });
 
 Route::middleware([
