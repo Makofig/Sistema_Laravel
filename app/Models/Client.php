@@ -40,4 +40,15 @@ class Client extends Model
     {
         return $this->belongsTo(Access_Point::class, 'id_point');
     }
+    /*
+    public function getDebtorsCountAttribute()
+    {
+        return $this->pagos()->where('estado', '0')->count();
+    }
+
+    public function getPaidCountAttribute()
+    {
+        return $this->pagos()->where('estado', '1')->count();
+    }
+    */
 }

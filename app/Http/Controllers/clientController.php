@@ -13,10 +13,24 @@ class clientController extends Controller
     public function index()
     {
         // obtener todos los clientes 
-        $clientes = Client::all(); 
-
+        # $clientes = Client::all(); 
+        $clientes = Client::withCount([
+            'pagos as debtors_count' => function ($query) {
+                $query->where('estado', '0');
+            },
+            'pagos as paid_count' => function ($query) {
+                $query->where('estado', '1');
+            }
+        ])->paginate(10);
         // Pasar los cliente a la vista 
         return view('clients.index', compact('clientes'));
+    }
+
+    public function debtors(){
+        $debtors = Client::whereHas('pagos', function($query) {
+            $query->where('estado', '0');
+        })->paginate(10);
+        return view('clients.debtors', compact('debtors'));
     }
 
     /**

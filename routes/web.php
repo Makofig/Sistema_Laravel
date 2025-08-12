@@ -59,9 +59,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/debtors', function () {
-        return view('debtors');
-    })->name('debtors');
+    Route::get('/clients/debtors', [clientController::class, 'debtors'])->name('debtors');
 });
 
 Route::middleware([

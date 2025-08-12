@@ -13,7 +13,7 @@ class access_pointController extends Controller
     public function index()
     {
         // Mostrar todos los puntos de acceso
-        $points = Access_Point::all(); 
+        $points = Access_Point::paginate(10); 
         return view('access_point.index', compact('points'));
     }
 

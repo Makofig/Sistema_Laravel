@@ -13,7 +13,7 @@ class contractController extends Controller
     public function index()
     {
         // obtener todos los contratos 
-        $contratos = Contracts::all(); 
+        $contratos = Contracts::paginate(10); 
 
         return view('contracts.index', compact('contratos'));
     }

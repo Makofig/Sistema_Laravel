@@ -15,7 +15,7 @@ class quotaController extends Controller
         // traer todas las cuotas y ordenar 
         // sortBy ordena en memoria 
         //$quotas = Quota::all()->sortBy('created_at');
-        $quotas = Quota::orderBy('created_at', 'desc')->get();
+        $quotas = Quota::orderBy('created_at', 'desc')->paginate(10);
         return view('quota.index', compact('quotas'));
     }
 
