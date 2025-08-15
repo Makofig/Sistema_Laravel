@@ -19,14 +19,15 @@ class Client extends Model
         'id_plan', 
         'id_point', 
         'nombre',
-        'apellido', 
-        'direccion', 
+        'apellido',
+        'direccion',
         'telefono',
-        'ip'
+        'ip',
+        'imagen'
     ]; 
 
     // Relación con el modelo de contratos uno a uno. 
-    public function contracts()
+    public function contract()
     {
         return $this->belongsTo(Contracts::class, 'id_plan');
     }

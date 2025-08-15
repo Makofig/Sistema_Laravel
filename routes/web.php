@@ -35,6 +35,22 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
+    Route::get('/clients/create', [clientController::class, 'create'])->name('clients.create');
+});
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->group(function () {
+    Route::post('/clients/store', [clientController::class, 'store'])->name('clients.store');
+});
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->group(function () {
     Route::get('/access-point', [access_pointController::class, 'index'])->name('access-point');
 });
 

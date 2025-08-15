@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Client;
+use App\Models\Contracts;
+use App\Models\Access_Point;
 use Illuminate\Http\Request;
 
 class clientController extends Controller
@@ -14,16 +16,9 @@ class clientController extends Controller
     {
         // obtener todos los clientes 
         # $clientes = Client::all(); 
-        $clientes = Client::withCount([
-            'pagos as debtors_count' => function ($query) {
-                $query->where('estado', '0');
-            },
-            'pagos as paid_count' => function ($query) {
-                $query->where('estado', '1');
-            }
-        ])->paginate(10);
         // Pasar los cliente a la vista 
-        return view('clients.index', compact('clientes'));
+        # $contracts = Contracts::all();
+        return view('clients.index');
     }
 
     public function debtors(){
@@ -38,7 +33,10 @@ class clientController extends Controller
      */
     public function create()
     {
-        //
+        // Retornar la vista para crear el usuario
+        $contracts = Contracts::all();
+        $points = Access_Point::all();
+        return view('clients.create', compact('contracts', 'points'));
     }
 
     /**
@@ -46,7 +44,44 @@ class clientController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // guardar el cliente
+        /*
+        $client = new Client();
+        $client->first_name = $request->input('first-name');
+        $client->last_name = $request->input('last-name');
+        $client->email = $request->input('email');
+        $client->ip_address = $request->input('ip-address');
+        */
+         $validated = $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'ip_address' => 'nullable|ip',
+            'phone' => 'required|string|max:20',
+            'contracts_id' => 'required',
+            'access_point_id' => 'required',
+            'street_address' => 'required|string|max:255',
+            'file_upload' => 'nullable|image|max:2048',
+        ]);
+        // Guardar imagen si viene en la petición
+        if ($request->hasFile('file_upload')) {
+            $nombreImagen = time() . '.' . $request->file_upload->extension();
+            $request->file_upload->storeAs('clients', $nombreImagen, 'public'); // carpeta storage/app/public/clients
+            $validated['imagen'] = $nombreImagen; // Guardamos solo el nombre en DB
+        }
+
+        Client::create([
+            'id_plan' => $validated['contracts_id'],
+            'id_point' => $validated['access_point_id'],
+            'nombre' => $validated['first_name'],
+            'apellido' => $validated['last_name'],
+            'direccion' => $validated['street_address'],
+            'telefono' => $validated['phone'],
+            'ip' => $validated['ip_address'],
+            'imagen' => $validated['imagen'] ?? null
+        ]);
+        // $client->save();
+
+        return redirect()->route('clients')->with('success', 'Cliente creado correctamente');
     }
 
     /**
