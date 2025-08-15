@@ -25,9 +25,9 @@
                         <p class="text-gray-500 mt-1">Manage your contracts and their account permissions here.</p>
                     </div>
                     <div class="mt-4 md:mt-0">
-                        <button class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-lg transition duration-150 ease-in-out">
+                        <a href="{{ route('contracts.create') }}" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-lg transition duration-150 ease-in-out">
                             Add Contract
-                        </button>
+                        </a>
                     </div>
                 </div>
 
@@ -40,15 +40,6 @@
                             </svg>
                         </div>
                         <input type="text" class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg w-full " placeholder="Search contracts...">
-                    </div>
-                    <div>
-                        <select class="border border-gray-300 rounded-lg px-4 py-2  w-full sm:w-auto">
-                            <option value="">All Contracts</option>
-                            <option value="standard">3 mb</option>
-                            <option value="premium">5 mb</option>
-                            <option value="vip">8 mb</option>
-                            
-                        </select>
                     </div>
                 </div>
             </div>
@@ -91,7 +82,7 @@
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900">{{ $contrato->megabytes }}</div>
+                                <div class="text-sm text-gray-900">{{ $contrato->megabytes }} mb</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm text-gray-900">$ {{ number_format($contrato->costo, 2, ',', '.') }}</div>

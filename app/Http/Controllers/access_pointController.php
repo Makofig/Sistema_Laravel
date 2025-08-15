@@ -14,7 +14,7 @@ class access_pointController extends Controller
     {
         // Mostrar todos los puntos de acceso
         $points = Access_Point::paginate(10); 
-        return view('access_point.index', compact('points'));
+        return view('access-point.index', compact('points'));
     }
 
     /**
@@ -22,7 +22,7 @@ class access_pointController extends Controller
      */
     public function create()
     {
-        //
+        return view('access-point.create');
     }
 
     /**
@@ -30,7 +30,22 @@ class access_pointController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Recuperar los datos para guardarlos 
+        $validated = $request->validate([
+            'ssid' => 'required|string|max:255',
+            'frequency' => 'required|string|max:100',
+            'ip_address' => 'nullable|ip',
+            'location' => 'required|string|max:255',
+        ]);
+
+        Access_Point::create([
+            'ssid' => $validated['ssid'],
+            'frecuencia' => $validated['frequency'],
+            'ip_ap' => $validated['ip_address'],
+            'localidad' => $validated['location'],
+        ]);
+
+        return redirect()->route('access-point.create')->with('success', 'Access Point created successfully.');
     }
 
     /**

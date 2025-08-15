@@ -11,6 +11,7 @@ class Contracts extends Model
 
     protected $fillable = [
         'nombre', 
+        'megabytes',
         'costo'
     ]; 
 

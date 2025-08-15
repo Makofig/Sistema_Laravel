@@ -22,6 +22,7 @@ Route::middleware([
     })->name('dashboard');
 });
 
+// Rutas de los clientes 
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
@@ -46,6 +47,7 @@ Route::middleware([
     Route::post('/clients/store', [clientController::class, 'store'])->name('clients.store');
 });
 
+// Ruta de los access points 
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
@@ -59,7 +61,40 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
+    Route::get('/access-point/create', [access_pointController::class, 'create'])->name('access-point.create');
+});
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->group(function () {
+    Route::post('/access-point/store', [access_pointController::class, 'store'])->name('access-point.store');
+});
+
+// Ruta de los planes 
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->group(function () {
     Route::get('/contracts', [contractController::class, 'index'])->name('contracts');
+});
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->group(function () {
+    Route::get('/contracts/create', [contractController::class, 'create'])->name('contracts.create');
+});
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->group(function () {
+    Route::post('/contracts/store', [contractController::class, 'store'])->name('contracts.store');
 });
 
 Route::middleware([

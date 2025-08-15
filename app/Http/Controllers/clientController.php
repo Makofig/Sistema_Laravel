@@ -52,7 +52,7 @@ class clientController extends Controller
         $client->email = $request->input('email');
         $client->ip_address = $request->input('ip-address');
         */
-         $validated = $request->validate([
+        $validated = $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'ip_address' => 'nullable|ip',
@@ -81,7 +81,7 @@ class clientController extends Controller
         ]);
         // $client->save();
 
-        return redirect()->route('clients')->with('success', 'Cliente creado correctamente');
+        return redirect()->route('clients.create')->with('success', 'Cliente creado correctamente');
     }
 
     /**

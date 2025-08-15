@@ -30,7 +30,7 @@ class ClientsTable extends Component
 
     public function updatedSearch($value)
     {
-        $this->search = preg_replace('/\s+/', ' ', trim($value));
+        $this->search = strtolower(preg_replace('/\s+/', ' ', trim($value)));
         $this->resetPage();
     }
 
@@ -62,9 +62,9 @@ class ClientsTable extends Component
             })
             ->when($this->search, function ($query){
                 $query->where(function ($q){
-                    $q->where('nombre', 'like', '%' . $this->search . '%')
-                      ->orWhere('apellido', 'like', '%' . $this->search . '%')
-                      ->orWhere('ip', 'like', '%' . $this->search . '%');
+                    $q->whereRaw('LOWER(nombre) LIKE ?', ['%' . $this->search . '%'])
+                      ->orWhereRaw('LOWER(apellido) LIKE ?', ['%' . $this->search . '%'])
+                      ->orWhereRaw('ip LIKE ?', ['%' . $this->search . '%']);
                 });
             })
             ->paginate(10);

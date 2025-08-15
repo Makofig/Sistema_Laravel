@@ -23,7 +23,8 @@ class contractController extends Controller
      */
     public function create()
     {
-        //
+        // Retornar la vista para crear el contrato
+        return view('contracts.create');
     }
 
     /**
@@ -31,7 +32,20 @@ class contractController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Recibimos los datos del contrato para guardarlos 
+        $validated= $request->validate([
+            'name' => 'required|string|max:255',
+            'megabytes' => 'required|integer|min:1',
+            'price' => 'required|numeric|min:0',
+        ]);
+
+        Contracts::create([
+            'nombre' => $validated['name'],
+            'megabytes' => $validated['megabytes'],
+            'costo' => $validated['price'],
+        ]);
+
+        return redirect()->route('contracts.create')->with('success', 'Contract created successfully.');
     }
 
     /**

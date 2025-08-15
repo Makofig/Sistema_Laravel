@@ -13,7 +13,6 @@ class Access_Point extends Model
         'ssid',
         'frecuencia',
         'ip_ap',
-        'numcliente',
         'localidad'
     ];
 
