@@ -13,9 +13,9 @@ class contractController extends Controller
     public function index()
     {
         // obtener todos los contratos 
-        $contratos = Contracts::paginate(10); 
+        $contracts = Contracts::paginate(10); 
 
-        return view('contracts.index', compact('contratos'));
+        return view('contracts.index', compact('contracts'));
     }
 
     /**
@@ -37,6 +37,10 @@ class contractController extends Controller
             'name' => 'required|string|max:255',
             'megabytes' => 'required|integer|min:1',
             'price' => 'required|numeric|min:0',
+        ],[
+            'name.required' => 'El nombre es obligatorio.',
+            'megabytes.required' => 'Los megabytes son obligatorios.',
+            'price.required' => 'El precio es obligatorio.',
         ]);
 
         Contracts::create([
@@ -45,7 +49,7 @@ class contractController extends Controller
             'costo' => $validated['price'],
         ]);
 
-        return redirect()->route('contracts.create')->with('success', 'Contract created successfully.');
+        return redirect()->route('contracts.create')->with('success', 'El plan se creó correctamente.');
     }
 
     /**
@@ -61,7 +65,9 @@ class contractController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        // Obtener el contrato por su ID
+        $contract = Contracts::findOrFail($id);
+        return view('contracts.edit', compact('contract'));
     }
 
     /**
@@ -69,7 +75,24 @@ class contractController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        // Recibimos los datos del contrato para guardarlos 
+        $validated= $request->validate([
+            'name' => 'required|string|max:255',
+            'megabytes' => 'required|integer|min:1',
+            'price' => 'required|numeric|min:0',
+        ],[
+            'name.required' => 'El nombre es obligatorio.',
+            'megabytes.required' => 'Los megabytes son obligatorios.',
+            'price.required' => 'El precio es obligatorio.',
+        ]);
+
+        Contracts::where('id', $id)->update([
+            'nombre' => $validated['name'],
+            'megabytes' => $validated['megabytes'],
+            'costo' => $validated['price'],
+        ]);
+
+        return redirect()->route('contracts.edit', $id)->with('success', 'El plan se actualizo correctamente.');
     }
 
     /**
@@ -77,6 +100,12 @@ class contractController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        // Eliminar un contrato seleccionado
+        $contract = Contracts::findOrFail($id);
+
+
+        $contract->delete();
+
+        return redirect()->route('contracts')->with('success', 'Contrato eliminado correctamente');
     }
 }

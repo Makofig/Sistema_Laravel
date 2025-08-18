@@ -30,7 +30,17 @@
                         </a>
                     </div>
                 </div>
-
+                @if(session('success'))
+                <script>
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Hecho!',
+                    text: `{{ session('success') }}`,
+                    timer: 2000,
+                    showConfirmButton: false
+                })
+                </script>
+                @endif
                 <!-- Search and Filter -->
                 <div class="mt-6 flex flex-col sm:flex-row gap-4">
                     <div class="relative flex-grow">
@@ -71,24 +81,24 @@
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
                         <!-- Row 1 -->
-                        @foreach ($contratos as $contrato)
+                        @foreach ($contracts as $contract)
                         <tr class="hover:bg-gray-50 transition-colors duration-150">
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
                                     <div>
-                                        <div class="text-sm font-medium text-gray-900">{{ $contrato->nombre }}</div>
-                                        <div class="text-sm text-gray-500">{{ $contrato->nombre }}</div>
+                                        <div class="text-sm font-medium text-gray-900">{{ $contract->nombre }}</div>
+                                        <div class="text-sm text-gray-500">{{ $contract->nombre }}</div>
                                     </div>
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900">{{ $contrato->megabytes }} mb</div>
+                                <div class="text-sm text-gray-900">{{ $contract->megabytes }} mb</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900">$ {{ number_format($contrato->costo, 2, ',', '.') }}</div>
+                                <div class="text-sm text-gray-900">$ {{ number_format($contract->costo, 2, ',', '.') }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="px-2 text-xs inline-flex rounded-full bg-green-100 text-green-800">{{ $contrato->cliente->count() }}</div>
+                                <div class="px-2 text-xs inline-flex rounded-full bg-green-100 text-green-800">{{ $contract->cliente->count() }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
@@ -96,8 +106,19 @@
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                <a href="#" class="text-indigo-600 hover:text-indigo-900 mr-3">Edit</a>
-                                <a href="#" class="text-red-600 hover:text-red-900">Delete</a>
+                                <a href="{{ route('contracts.edit', $contract->id) }}" class="text-indigo-600 hover:text-indigo-900 mr-3">Edit</a>
+                                <form id="delete-contract-{{ $contract->id }}" 
+                                    action="{{ route('contracts.destroy', $contract->id) }}" 
+                                    method="POST" style="display: none;">
+                                    @csrf
+                                    @method('DELETE')
+                                </form>
+
+                                <button type="button" 
+                                        class="text-red-600 hover:text-red-900" 
+                                        onclick="confirmDelete(`{{ $contract->id }}`)">
+                                    Delete
+                                </button>
                             </td>
                         </tr>
                         @endforeach
@@ -106,10 +127,28 @@
             </div>
 
             <!-- Pagination -->
-            <x-pagination :paginator="$contratos" />
+            <x-pagination :paginator="$contracts" />
         </div>
     </div>
     </div>
+    <script>
+    function confirmDelete(contractId) {
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "Esta acción no se puede deshacer",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById(`delete-contract-${contractId}`).submit();
+            }
+        })
+    }
+    </script>
 </body>
 
 </html>

@@ -36,6 +36,11 @@ class access_pointController extends Controller
             'frequency' => 'required|string|max:100',
             'ip_address' => 'nullable|ip',
             'location' => 'required|string|max:255',
+        ],[
+            'ssid.required' => 'El SSID es obligatorio.',
+            'frequency.required' => 'La frecuencia es obligatoria.',
+            'ip_address.ip' => 'La dirección IP debe ser válida.',
+            'location.required' => 'La ubicación es obligatoria.',
         ]);
 
         Access_Point::create([
@@ -61,7 +66,9 @@ class access_pointController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        // Editar un punto de acceso
+        $point = Access_Point::findOrFail($id);
+        return view('access-point.edit', compact('point'));
     }
 
     /**
@@ -69,7 +76,27 @@ class access_pointController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        // Recibimos los datos del contrato para guardarlos 
+        $validated= $request->validate([
+            'ssid' => 'required|string|max:255',
+            'frequency' => 'required|string|max:100',
+            'ip_address' => 'nullable|ip',
+            'location' => 'required|string|max:255',
+        ],[
+            'ssid.required' => 'El SSID es obligatorio.',
+            'frequency.required' => 'La frecuencia es obligatoria.',
+            'ip_address.ip' => 'La dirección IP debe ser válida.',
+            'location.required' => 'La ubicación es obligatoria.',
+        ]);
+
+        Access_Point::where('id', $id)->update([
+            'ssid' => $validated['ssid'],
+            'frecuencia' => $validated['frequency'],
+            'ip_ap' => $validated['ip_address'],
+            'localidad' => $validated['location'],
+        ]);
+
+        return redirect()->route('access-point.edit', $id)->with('success', 'El punto de acceso se actualizo correctamente.');
     }
 
     /**
@@ -77,6 +104,10 @@ class access_pointController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        // Eliminar un punto de acceso seleccionado
+        $point = Access_Point::findOrFail($id);
+        $point->delete();
+
+        return redirect()->route('access-point')->with('success', 'Punto de acceso eliminado correctamente');
     }
 }

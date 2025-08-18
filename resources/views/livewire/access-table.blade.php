@@ -1,5 +1,16 @@
 <div>
     {{-- The whole world belongs to you. --}}
+    @if(session('success'))
+    <script>
+    Swal.fire({
+        icon: 'success',
+        title: '¡Hecho!',
+        text: `{{ session('success') }}`,
+        timer: 2000,
+        showConfirmButton: false
+    })
+    </script>
+    @endif
     <!-- Search and Filter -->
     
     <div class="m-6 flex flex-col sm:flex-row gap-4">
@@ -59,8 +70,18 @@
                         </span>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <a href="#" class="text-indigo-600 hover:text-indigo-900 mr-3">Edit</a>
-                        <a href="#" class="text-red-600 hover:text-red-900">Delete</a>
+                        <a href="{{ route('access-point.edit', $point->id) }}" class="text-indigo-600 hover:text-indigo-900 mr-3">Edit</a>
+                        <form id="delete-points-{{ $point->id }}" 
+                            action="{{ route('access-point.destroy', $point->id) }}" 
+                            method="POST" style="display: none;">
+                            @csrf
+                            @method('DELETE')
+                        </form>
+                        <button type="button" 
+                                class="text-red-600 hover:text-red-900" 
+                                onclick="confirmDelete(`{{ $point->id }}`)">
+                            Delete
+                        </button>
                     </td>
                 </tr>
                 @endforeach
@@ -71,3 +92,21 @@
     <!-- Pagination -->
     <x-pagination :paginator="$points" />
 </div>
+<script>
+function confirmDelete(pointId) {
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: "Esta acción no se puede deshacer",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById(`delete-points-${pointId}`).submit();
+        }
+    })
+}
+</script>

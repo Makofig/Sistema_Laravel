@@ -6,6 +6,7 @@ use App\Models\Client;
 use App\Models\Contracts;
 use App\Models\Access_Point;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class clientController extends Controller
 {
@@ -57,10 +58,22 @@ class clientController extends Controller
             'last_name' => 'required|string|max:255',
             'ip_address' => 'nullable|ip',
             'phone' => 'required|string|max:20',
-            'contracts_id' => 'required',
-            'access_point_id' => 'required',
+            'contracts_id' => 'required|exists:plan,id',
+            'access_point_id' => 'required|exists:accespoint,id',
             'street_address' => 'required|string|max:255',
             'file_upload' => 'nullable|image|max:2048',
+        ], [
+            // Mensajes personalizados
+            'first_name.required'      => 'El nombre no puede estar vacío.',
+            'last_name.required'       => 'El apellido no puede estar vacío.',
+            'phone.required'           => 'El número de teléfono es obligatorio.',
+            'contracts_id.required'    => 'Debe seleccionar un plan.',
+            'contracts_id.exists'      => 'El plan seleccionado no es válido.',
+            'access_point_id.required' => 'Debe seleccionar un punto de acceso.',
+            'access_point_id.exists'   => 'El punto de acceso seleccionado no es válido.',
+            'street_address.required'  => 'La dirección es obligatoria.',
+            'file_upload.image'        => 'El archivo debe ser una imagen válida.',
+            'file_upload.max'          => 'La imagen no puede superar los 2 MB.',
         ]);
         // Guardar imagen si viene en la petición
         if ($request->hasFile('file_upload')) {
@@ -97,7 +110,11 @@ class clientController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        // Mostramos la pagina para editar el cliente
+        $client = Client::findOrFail($id);
+        $contracts = Contracts::all();
+        $points = Access_Point::all();
+        return view('clients.edit', compact('client', 'contracts', 'points'));
     }
 
     /**
@@ -105,7 +122,61 @@ class clientController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        // Recibir los datos para actualizar el cliente
+        $validated = $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'ip_address' => 'nullable|ip',
+            'phone' => 'required|string|max:20',
+            'contracts_id' => 'required|exists:plan,id',
+            'access_point_id' => 'required|exists:accespoint,id',
+            'street_address' => 'required|string|max:255',
+            'file_upload' => 'nullable|image|max:2048',
+        ], [
+            // Mensajes personalizados
+            'first_name.required'      => 'El nombre no puede estar vacío.',
+            'last_name.required'       => 'El apellido no puede estar vacío.',
+            'phone.required'           => 'El número de teléfono es obligatorio.',
+            'contracts_id.required'    => 'Debe seleccionar un plan.',
+            'contracts_id.exists'      => 'El plan seleccionado no es válido.',
+            'access_point_id.required' => 'Debe seleccionar un punto de acceso.',
+            'access_point_id.exists'   => 'El punto de acceso seleccionado no es válido.',
+            'street_address.required'  => 'La dirección es obligatoria.',
+            'file_upload.image'        => 'El archivo debe ser una imagen válida.',
+            'file_upload.max'          => 'La imagen no puede superar los 2 MB.',
+        ]);
+
+        $client = Client::findOrFail($id);
+
+        // Si viene nueva imagen
+        if ($request->hasFile('file_upload')) {
+            // Borrar la anterior si existe
+            if ($client->imagen && Storage::disk('public')->exists('clients/' . $client->imagen)) {
+                Storage::disk('public')->delete('clients/' . $client->imagen);
+            }
+
+            // Guardar nueva
+            $nombreImagen = time() . '.' . $request->file_upload->extension();
+            $request->file_upload->storeAs('clients', $nombreImagen, 'public');
+            $validated['imagen'] = $nombreImagen;
+        } else {
+            // Mantener la actual si no se subió nueva
+            $validated['imagen'] = $client->imagen;
+        }
+
+        $client->update([
+            'id_plan' => $validated['contracts_id'],
+            'id_point' => $validated['access_point_id'],
+            'nombre' => $validated['first_name'],
+            'apellido' => $validated['last_name'],
+            'direccion' => $validated['street_address'],
+            'telefono' => $validated['phone'],
+            'ip' => $validated['ip_address'],
+            'imagen' => $validated['imagen'] ?? null
+        ]);
+        // $client->save();
+
+        return redirect()->route('clients.edit', $client->id)->with('success', 'Cliente actualizado correctamente');
     }
 
     /**
@@ -113,6 +184,16 @@ class clientController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        // Eliminar un cliente seleccionado
+        $client = Client::findOrFail($id);
+
+        // Si tiene imagen, borrarla
+        if ($client->imagen && Storage::disk('public')->exists("clients/{$client->imagen}")) {
+            Storage::disk('public')->delete("clients/{$client->imagen}");
+        }
+
+        $client->delete();
+
+        return redirect()->route('clients')->with('success', 'Cliente eliminado correctamente');
     }
 }

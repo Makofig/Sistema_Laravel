@@ -47,6 +47,30 @@ Route::middleware([
     Route::post('/clients/store', [clientController::class, 'store'])->name('clients.store');
 });
 
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->group(function () {
+    Route::get('/clients/edit/{id}', [clientController::class, 'edit'])->name('clients.edit');
+});
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->group(function () {
+    Route::put('/clients/update/{id}', [clientController::class, 'update'])->name('clients.update');
+});
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->group(function () {
+    Route::delete('/clients/destroy/{id}', [clientController::class, 'destroy'])->name('clients.destroy');
+});
+
 // Ruta de los access points 
 Route::middleware([
     'auth:sanctum',
@@ -54,6 +78,14 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/access-point', [access_pointController::class, 'index'])->name('access-point');
+});
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->group(function () {
+    Route::post('/access-point/store', [access_pointController::class, 'store'])->name('access-point.store');
 });
 
 Route::middleware([
@@ -69,7 +101,23 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::post('/access-point/store', [access_pointController::class, 'store'])->name('access-point.store');
+    Route::get('/access-point/edit/{id}', [access_pointController::class, 'edit'])->name('access-point.edit');
+});
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->group(function () {
+    Route::put('/access-point/update/{id}', [access_pointController::class, 'update'])->name('access-point.update');
+});
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->group(function () {
+    Route::delete('/access-point/destroy/{id}', [access_pointController::class, 'destroy'])->name('access-point.destroy');
 });
 
 // Ruta de los planes 
@@ -95,6 +143,30 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::post('/contracts/store', [contractController::class, 'store'])->name('contracts.store');
+});
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->group(function () {
+    Route::get('/contracts/edit/{id}', [contractController::class, 'edit'])->name('contracts.edit');
+});
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->group(function () {
+    Route::put('/contracts/update/{id}', [contractController::class, 'update'])->name('contracts.update');
+});
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->group(function () {
+    Route::delete('/contracts/destroy/{id}', [contractController::class, 'destroy'])->name('contracts.destroy');
 });
 
 Route::middleware([

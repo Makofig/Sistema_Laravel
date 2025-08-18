@@ -1,4 +1,15 @@
 <div>
+    @if (session('success'))
+    <script>
+    Swal.fire({
+        icon: 'success',
+        title: '¡Hecho!',
+        text: `{{ session('success') }}`,
+        timer: 2000,
+        showConfirmButton: false
+    })
+    </script>
+    @endif
     <!-- Search and Filter -->
     <div class="m-6 flex flex-col sm:flex-row gap-4">
         <div class="relative flex-grow">
@@ -50,11 +61,11 @@
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="flex items-center">
                             <div class="h-10 w-10 flex-shrink-0">
-                                <img 
-                                    class="h-10 w-10 rounded-full object-cover" 
+                                <img
+                                    class="h-10 w-10 rounded-full object-cover"
                                     src="{{ $client->imagen 
                                         ? asset('storage/clients/' . $client->imagen) 
-                                        : asset('images/default-avatar.png') }}" 
+                                        : asset('images/default-avatar.png') }}"
                                     alt="{{ $client->nombre }} {{ $client->apellido }}">
                             </div>
                             <div class="ml-4">
@@ -82,8 +93,18 @@
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <a href="#" class="text-indigo-600 hover:text-indigo-900 mr-3">Ver</a>
-                        <a href="#" class="text-indigo-600 hover:text-indigo-900 mr-3">Edit</a>
-                        <a href="#" class="text-red-600 hover:text-red-900">Delete</a>
+                        <a href="{{ route('clients.edit', $client->id) }}" class="text-indigo-600 hover:text-indigo-900 mr-3">Edit</a>
+                        <form id="delete-client-{{ $client->id }}" 
+                            action="{{ route('clients.destroy', $client->id) }}" 
+                            method="POST" style="display: none;">
+                            @csrf
+                            @method('DELETE')
+                        </form>
+                        <button type="button" 
+                                class="text-red-600 hover:text-red-900" 
+                                onclick="confirmDelete(`{{ $client->id }}`)">
+                            Delete
+                        </button>
                     </td>
                 </tr>
                 @endforeach
@@ -93,5 +114,23 @@
     <!-- Pagination -->
 
     <x-pagination :paginator="$clients" />
-    
+
 </div>
+<script>
+function confirmDelete(clientId) {
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: "Esta acción no se puede deshacer",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById(`delete-client-${clientId}`).submit();
+        }
+    })
+}
+</script>

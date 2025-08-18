@@ -10,11 +10,12 @@
             <div class="container max-w-6xl">
                 <div class="bg-white rounded-xl shadow-md overflow-hidden">
                     <div class="max-w-2xl mx-auto py-10">      
-                        <form method="POST" action="{{ route('clients.store') }}" enctype="multipart/form-data">
+                        <form method="POST" action="{{ route('clients.update', $client->id) }}" enctype="multipart/form-data">
                             @csrf
+                            @method('PUT')
                             <div class="space-y-12">
                                 <div class="border-b border-gray-900/10 pb-12">
-                                    <h2 class="text-base/7 font-semibold text-gray-900">Create Client</h2>
+                                    <h2 class="text-base/7 font-semibold text-gray-900">Edit Client</h2>
                                     <p class="mt-1 text-sm/6 text-gray-600">This information will be displayed publicly so be careful what you share.</p>
                                     @if ($errors->any())
                                         <div class="bg-red-100 text-red-800 p-3 rounded mb-4">
@@ -70,7 +71,7 @@
                                         <div class="sm:col-span-3">
                                             <label for="first_name" class="block text-sm/6 font-medium text-gray-900">First name</label>
                                             <div class="mt-2">
-                                                <input id="first_name" type="text" name="first_name" autocomplete="given-name" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
+                                                <input id="first_name" type="text" name="first_name" value="{{ $client->nombre ? $client->nombre : '' }}" autocomplete="given-name" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
                                                 @error('first_name')
                                                     <span class="text-red-600 text-sm">{{ $message }}</span>
                                                 @enderror
@@ -80,7 +81,7 @@
                                         <div class="sm:col-span-3">
                                             <label for="last_name" class="block text-sm/6 font-medium text-gray-900">Last name</label>
                                             <div class="mt-2">
-                                                <input id="last_name" type="text" name="last_name" autocomplete="family-name" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
+                                                <input id="last_name" type="text" name="last_name" value="{{ $client->apellido ? $client->apellido : '' }}" autocomplete="family-name" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
                                                 @error('last_name')
                                                     <span class="text-red-600 text-sm">{{ $message }}</span>
                                                 @enderror
@@ -90,7 +91,7 @@
                                         <div class="sm:col-span-4">
                                             <label for="email" class="block text-sm/6 font-medium text-gray-900">Email address</label>
                                             <div class="mt-2">
-                                                <input id="email" type="email" name="email" autocomplete="email" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
+                                                <input id="email" type="email" name="email" value="{{ $client->email ? $client->email : '' }}" autocomplete="email" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
                                                 @error('email')
                                                     <span class="text-red-600 text-sm">{{ $message }}</span>
                                                 @enderror
@@ -100,7 +101,7 @@
                                         <div class="sm:col-span-4">
                                             <label for="phone" class="block text-sm/6 font-medium text-gray-900">Phone</label>
                                             <div class="mt-2">
-                                                <input id="phone" type="tel" name="phone" autocomplete="tel" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
+                                                <input id="phone" type="tel" name="phone" value="{{ $client->telefono ? $client->telefono : '' }}" autocomplete="tel" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
                                                 @error('phone')
                                                     <span class="text-red-600 text-sm">{{ $message }}</span>
                                                 @enderror
@@ -110,7 +111,7 @@
                                         <div class="sm:col-span-3">
                                             <label for="ip_address" class="block text-sm/6 font-medium text-gray-900">IP Address</label>
                                             <div class="mt-2">
-                                                <input id="ip_address" type="text" name="ip_address" autocomplete="ip_address" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
+                                                <input id="ip_address" type="text" value="{{ $client->ip ? $client->ip : '' }}" name="ip_address" autocomplete="ip_address" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
                                                 @error('ip_address')
                                                     <span class="text-red-600 text-sm">{{ $message }}</span>
                                                 @enderror
@@ -123,7 +124,7 @@
                                                 <select id="contracts_id" name="contracts_id" autocomplete="contracts_id-name" class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
                                                     <option>Select a contract</option>
                                                     @foreach ($contracts as $contract)
-                                                        <option value="{{ $contract->id }}">{{ $contract->megabytes }}</option>
+                                                        <option value="{{ $contract->id }}">{{ $contract->megabytes ? $contract->megabytes . ' MB' : '' }}</option>
                                                     @endforeach
                                                 </select>
                                                 @error('contracts_id')
@@ -156,7 +157,7 @@
                                         <div class="col-span-full">
                                             <label for="street_address" class="block text-sm/6 font-medium text-gray-900">Street address</label>
                                             <div class="mt-2">
-                                                <input id="street_address" type="text" name="street_address" autocomplete="street_address" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
+                                                <input id="street_address" type="text" value="{{ $client->direccion ? $client->direccion : '' }}" name="street_address" autocomplete="street_address" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
                                                 @error('street_address')
                                                     <span class="text-red-600 text-sm">{{ $message }}</span>
                                                 @enderror
