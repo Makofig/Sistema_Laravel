@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Payments;
 
 class paymentController extends Controller
 {
@@ -35,7 +36,11 @@ class paymentController extends Controller
      */
     public function show(string $id)
     {
-        //
+        // mostrar detalles del pago
+        $payment = Payments::findOrFail($id);
+
+        //return view('payments.show', ['payment' => $payment]);
+        return view('payments.show', compact('payment'));
     }
 
     /**
@@ -43,7 +48,11 @@ class paymentController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        // editar los detalles del pago
+        $payment = Payments::findOrFail($id);
+
+        //return view('payments.edit', ['payment' => $payment]);
+        return view('payments.edit', compact('payment'));
     }
 
     /**

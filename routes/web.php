@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\clientController; 
 use App\Http\Controllers\contractController;
 use App\Http\Controllers\access_pointController;
+use App\Http\Controllers\paymentController;
 use App\Http\Controllers\quotaController;
 
 Route::get('/', function () {
@@ -69,6 +70,14 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::delete('/clients/destroy/{id}', [clientController::class, 'destroy'])->name('clients.destroy');
+});
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->group(function () {
+    Route::get('/clients/show/{id}', [clientController::class, 'show'])->name('clients.show');
 });
 
 // Ruta de los access points 
@@ -193,4 +202,20 @@ Route::middleware([
     Route::get('/statistics', function () {
         return view('statistics');
     })->name('statistics');
+});
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->group(function () {
+    Route::get('/payments/show/{id}', [paymentController::class, 'show'])->name('payments.show');
+});
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->group(function () {
+    Route::get('/payments/edit/{id}', [paymentController::class, 'edit'])->name('payments.edit');
 });

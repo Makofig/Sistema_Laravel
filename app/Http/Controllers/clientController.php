@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Client;
 use App\Models\Contracts;
 use App\Models\Access_Point;
+use App\Models\Payments;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -102,7 +103,15 @@ class clientController extends Controller
      */
     public function show(string $id)
     {
-        //
+        // mostrar la información de un cliente
+        $client = Client::findOrFail($id);
+
+        // Obtener los pagos asociados al cliente
+        $payments = Payments::where('id_cliente', $client->id)
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        return view('clients.show', compact('client', 'payments'));
     }
 
     /**

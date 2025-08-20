@@ -2,9 +2,11 @@
 <div class="bg-white px-4 py-3 border-t border-gray-200 sm:px-6">
     <div class="flex items-center justify-between flex-col sm:flex-row">
         <div class="mb-4 sm:mb-0">
-            <p class="text-sm text-gray-700">
-                Showing <span class="font-medium">{{ $paginator->firstItem() }}</span> to <span class="font-medium">{{ $paginator->lastItem() }}</span> of <span class="font-medium">{{ $paginator->total() }}</span> results
-            </p>
+            @if ($paginator->hasPages())
+                <span class="text-sm text-gray-700">
+                    {{ __('Showing') }} <span class="font-medium">{{ $paginator->firstItem() }}</span> {{ __('to') }} <span class="font-medium">{{ $paginator->lastItem() }}</span> {{ __('of') }} <span class="font-medium">{{ $paginator->total() }}</span> {{ __('results') }}
+                </span>
+            @endif
         </div>
         <div>
             @if ($paginator->hasPages())
