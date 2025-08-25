@@ -60,7 +60,37 @@ class paymentController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        // Validar los datos 
+        $validated = $request->validate([
+            'amount' => 'required|numeric|min:0',
+            'coment' => 'required|string|max:255',
+            'payment_date' => 'required|date',
+            'voucher' => 'nullable|file|mimes:jpg,png,pdf|max:2048',
+        ]); 
+
+        // Encontrar el pago
+        $payment = Payments::findOrFail($id);
+
+       // Armamos el array de actualización
+        $data = [
+            'abonado'    => $validated['amount'],
+            'estado'     => '1',
+            'comentario' => $validated['coment'],
+            'fecha_pago' => $validated['payment_date'],
+        ];
+
+        // Si subió un comprobante, lo guardamos
+        if ($request->hasFile('voucher')) {
+            // Usamos el ID del cliente para la carpeta
+            $clientId = $payment->id_cliente; // suponiendo que Payments tiene relación con Client
+            $path = $request->file('voucher')->store("vouchers/client_$clientId", 'public');
+            $data['image'] = $path;
+        }
+
+        // Actualizar
+        $payment->update($data);
+
+        return redirect()->route('clients.show', $payment->id_cliente)->with('success', 'Payment updated successfully.');
     }
 
     /**

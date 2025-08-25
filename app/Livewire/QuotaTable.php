@@ -11,6 +11,8 @@ class QuotaTable extends Component
 {
     use WithPagination; 
 
+    protected $paginationTheme = 'tailwind';
+
     public $search = '';
 
     public function updatedSearch($value)

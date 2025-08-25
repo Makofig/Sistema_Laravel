@@ -219,3 +219,11 @@ Route::middleware([
 ])->group(function () {
     Route::get('/payments/edit/{id}', [paymentController::class, 'edit'])->name('payments.edit');
 });
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->group(function () {
+    Route::put('/payments/update/{id}', [paymentController::class, 'update'])->name('payments.update');
+});

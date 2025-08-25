@@ -107,11 +107,12 @@ class clientController extends Controller
         $client = Client::findOrFail($id);
 
         // Obtener los pagos asociados al cliente
+        /*
         $payments = Payments::where('id_cliente', $client->id)
             ->orderBy('created_at', 'desc')
             ->paginate(10);
-
-        return view('clients.show', compact('client', 'payments'));
+        */
+        return view('clients.show', compact('client'));
     }
 
     /**
