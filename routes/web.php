@@ -191,6 +191,22 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
+    Route::get('/quota/create', [quotaController::class, 'create'])->name('quota.create');
+});
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->group(function () {
+    Route::post('/quota/store', [quotaController::class, 'store'])->name('quota.store');
+});
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->group(function () {
     Route::get('/clients/debtors', [clientController::class, 'debtors'])->name('debtors');
 });
 
