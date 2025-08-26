@@ -38,8 +38,8 @@
                             <div class="flex justify-center py-5">
                                 <div class="w-full md:w-2/4 bg-white border border-gray-300 rounded-lg shadow-md p-6">
                                     <div class="text-gray-700">
-                                        <p class="flex justify-center mb-4 text-lg font-semibold">
-                                            Price: <strong class="ml-1">$ {{ number_format($payment->costo, 2) }}</strong>
+                                        <p id="price" class="flex justify-center mb-4 text-lg font-semibold">
+                                            Price: <strong id="priceValue" data-price="{{ $payment->costo }}" class="ml-1">$ {{ number_format($payment->costo, 2) }}</strong>
                                         </p>
 
                                         <form id="update-{{ $payment->id }}" action="{{ route('payments.update', $payment->id) }}" method="POST" enctype="multipart/form-data" class="flex flex-col items-center">
@@ -54,6 +54,7 @@
                                                     step="0.01"
                                                     class="shadow border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring focus:ring-indigo-300"
                                                     required>
+                                                <p id="amountError" class="mt-2 text-sm hidden"></p>
                                                 @error('amount')
                                                 <p class="text-red-500 text-xs italic mt-2 text-center">{{ $message }}</p>
                                                 @enderror
@@ -108,10 +109,10 @@
                             </div>
 
                         </div>
-
+                        <x-button-previous />
                     </div>
                 </div>
-            </div>
+            </div>     
         </div>
     </div>
 </x-app-layout>
@@ -132,4 +133,42 @@
             }
         })
     }
+
+    // Validación del campo de precio
+    document.addEventListener("DOMContentLoaded", () => {
+        const amountInput = document.getElementById("amount");
+        const priceValue = parseFloat(document.getElementById("priceValue").dataset.price);
+        const errorMessage = document.getElementById("amountError");
+
+        amountInput.addEventListener("input", () => {
+            const value = parseFloat(amountInput.value);
+
+            if (isNaN(value)) {
+                amountInput.classList.remove("border-green-500", "border-red-500");
+                errorMessage.classList.add("hidden");
+                return;
+            }
+
+            if (value < priceValue) {
+                amountInput.classList.remove("border-green-500");
+                amountInput.classList.add("border-red-500");
+                errorMessage.textContent = `El monto ingresado es menor al precio de la cuota ($${priceValue.toFixed(2)}).`;
+                errorMessage.classList.remove("hidden");
+                errorMessage.classList.add("text-red-600");
+            } else if (value === priceValue) {
+                amountInput.classList.remove("border-red-500");
+                amountInput.classList.add("border-green-500");
+                errorMessage.textContent = "Monto correcto.";
+                errorMessage.classList.remove("hidden");
+                errorMessage.classList.remove("text-red-600");
+                errorMessage.classList.add("text-green-600");
+            } else {
+                amountInput.classList.remove("border-green-500");
+                amountInput.classList.add("border-red-500");
+                errorMessage.textContent = `El monto no puede superar el valor de la cuota ($${priceValue.toFixed(2)}).`;
+                errorMessage.classList.remove("hidden");
+                errorMessage.classList.add("text-red-600");
+            }
+        });
+    });
 </script>

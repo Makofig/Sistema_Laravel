@@ -34,6 +34,7 @@
                         </div>
                     </div>
                     <div>
+                        @include('payments.partials.payment-details', ['payment' => $payment])
                     </div>
                 </div>
             </div>
