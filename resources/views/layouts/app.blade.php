@@ -16,7 +16,8 @@
         <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <script src="//unpkg.com/alpinejs" defer></script>
+        <!-- AlpineJS -->
+        <!-- <script src="//unpkg.com/alpinejs" defer></script> -->
         <!-- Styles -->
         @livewireStyles
     </head>
@@ -45,5 +46,6 @@
         @stack('scripts')
 
         @livewireScripts
+        @stack('scripts')
     </body>
 </html>

@@ -4,76 +4,108 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\Client;
-use App\Models\Quota;
 use App\Models\Payments;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class Statistics extends Component
 {
-    public $totalClients;
-    public $totalPayments;
-    public $totalPaid;
-    public $totalDebt;
-    public $paymentsPerMonth;
-    public $paymentStatuses;
-    public $topDebtors;
-    public $topPayers;
+    public $mes;
+    public $anio;
 
     public function mount()
     {
-        // 👥 Total de clientes
-        $this->totalClients = Client::count();
-
-        // 💰 Total de pagos registrados (en general)
-        $this->totalPayments = Payments::count();
-
-        // ✅ Total abonado (pagado)
-        $this->totalPaid = Payments::where('estado', '1')->sum('abonado');
-
-        // ❌ Total deuda (sumamos los montos de los no pagados)
-        $this->totalDebt = Payments::where('estado', '0')->sum('costo');
-
-        // 📊 Pagos por mes (según fecha de creación o período)
-        $this->paymentsPerMonth = Payments::selectRaw('DATE_FORMAT(created_at, "%Y-%m") as month, SUM(abonado) as totalPagado, SUM(costo) as totalCuotas')
-            ->groupBy('month')
-            ->orderBy('month')
-            ->get()
-            ->mapWithKeys(fn($row) => [
-                $row->month => [
-                    'totalCuotas' => $row->totalCuotas,
-                    'totalPagado' => $row->totalPagado,
-                    'deuda' => $row->totalCuotas - $row->totalPagado,
-                ]
-            ])
-            ->toArray();
-
-        // 🥧 Estados de pagos (cuántos están pagos vs pendientes)
-        $this->paymentStatuses = Payments::select('estado', DB::raw('count(*) as total'))
-            ->groupBy('estado')
-            ->pluck('total', 'estado')
-            ->toArray();
-
-        // 🔝 Top 5 deudores
-        $this->topDebtors = Client::withSum(['pagos as deuda' => function ($q) {
-            $q->where('estado', '0'); // cuotas no pagadas
-        }], 'costo')
-            ->orderByDesc('deuda')
-            ->take(5)
-            ->get()
-            ->toArray();
-
-        // 🔝 top 5 clientes que más pagan
-        $this->topPayers = Client::withSum(['pagos as total_paid' => function ($q) {
-                $q->where('estado', 1); // Solo pagos confirmados
-            }], 'abonado')
-            ->orderByDesc('total_paid')
-            ->take(5)
-            ->get()
-            ->toArray();
+        $this->mes = Carbon::now()->month;
+        $this->anio = Carbon::now()->year;
     }
 
     public function render()
     {
-        return view('livewire.statistics');
+        // Total de clientes
+        $totalClientes = Client::count();
+
+        // 💰 Recaudado y esperado (evitamos NULLs en fecha_pago)
+        $recaudado = Payments::whereNotNull('fecha_pago')
+            ->whereMonth('fecha_pago', $this->mes)
+            ->whereYear('fecha_pago', $this->anio)
+            ->sum('abonado');
+
+        $totalEsperado = Payments::whereNotNull('created_at')
+            ->whereMonth('created_at', $this->mes)
+            ->whereYear('created_at', $this->anio)
+            ->sum('costo');
+
+        $pendiente = $totalEsperado - $recaudado;
+
+        // ✅ Clientes con pago (estado=1 y abonado>0)
+        $clientesConPago = Payments::whereNotNull('fecha_pago')
+            ->whereMonth('fecha_pago', $this->mes)
+            ->whereYear('fecha_pago', $this->anio)
+            ->where('estado', 1)
+            ->where('abonado', '>', 0)
+            ->distinct('id_cliente')
+            ->count('id_cliente');
+
+        // % morosidad
+        $morosidad = $totalClientes > 0 
+            ? round((($totalClientes - $clientesConPago) / $totalClientes) * 100, 2) 
+            : 0;
+
+        // 📊 Rangos de puntualidad
+        $rangos = [
+            '1-10' => Payments::whereNotNull('fecha_pago')
+                ->whereMonth('fecha_pago', $this->mes)
+                ->whereYear('fecha_pago', $this->anio)
+                ->whereBetween(DB::raw('DAY(fecha_pago)'), [1, 10])
+                ->count() ?? 0,
+
+            '11-20' => Payments::whereNotNull('fecha_pago')
+                ->whereMonth('fecha_pago', $this->mes)
+                ->whereYear('fecha_pago', $this->anio)
+                ->whereBetween(DB::raw('DAY(fecha_pago)'), [11, 20])
+                ->count() ?? 0,
+
+
+            '>21' => Payments::whereNotNull('fecha_pago')
+                ->whereMonth('fecha_pago', $this->mes)
+                ->whereYear('fecha_pago', $this->anio)
+                ->where(DB::raw('DAY(fecha_pago)'), '>', 21)
+                ->count() ?? 0,
+        ];
+
+        // 📊 Deudores
+        $deudores = $totalClientes - $clientesConPago;
+
+        // 🚨 Clientes que NO pagaron hasta el 15
+        $morosos = Client::whereNotIn('id', function ($q) {
+            $q->select('id_cliente')
+                ->from('pagos')
+                ->whereNotNull('fecha_pago')
+                ->whereMonth('fecha_pago', $this->mes)
+                ->whereYear('fecha_pago', $this->anio)
+                ->whereDay('fecha_pago', '<=', 15);
+        })->get();
+
+        $this->dispatch('updateCharts', [
+            'recaudado' => $recaudado,
+            'pendiente' => $pendiente,
+            'rangos'    => [
+                '1-10' => $rangos['1-10'],
+                '11-20' => $rangos['11-20'],
+                '>21' => $rangos['>21'],
+            ],
+        ]);
+
+        return view('livewire.statistics', [
+            'totalClientes' => $totalClientes,
+            'recaudado'     => $recaudado,
+            'pendiente'     => $pendiente,
+            'morosidad'     => $morosidad,
+            'rangos'        => $rangos,
+            'deudores'      => $deudores,
+            'morosos'       => $morosos,
+            'mes'           => $this->mes,
+            'anio'          => $this->anio,
+        ]);
     }
 }

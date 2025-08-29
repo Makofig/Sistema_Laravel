@@ -63,11 +63,13 @@ class GenerateMonthlyQuotas extends Command
             }
 
             $this->info("✅ Cuota generada para el periodo {$year}-{$month}");
-            Mail::to('AlGusOf10@gmail.com')->send(new QuotaGeneratedMail($quota, 'success'));
+            //Mail::to('AlGusOf10@gmail.com')->send(new QuotaGeneratedMail($quota, 'success'));
         } else {
+            /*
             Mail::to('AlGusOf10@gmail.com')->send(
                 new QuotaGeneratedMail(null, 'failed', 'La cuota ya existe para este período.')
             );
+            */
             $this->warn("⚠️ La cuota ya fue generada para el periodo {$year}-{$month}");
         }
         Log::info('✔️ quotas:generate ejecutado correctamente a las ' . now());

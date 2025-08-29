@@ -57,9 +57,11 @@ class quotaController extends Controller
 
             if ($existingQuota) {
                 // Enviar correo de fallo
+                /*
                 Mail::to('AlGusOf10@gmail.com')->send(
                     new QuotaGeneratedMail(null, 'failed', 'La cuota ya existe para este período.')
                 );
+                */
 
                 return redirect()->back()->withErrors(['quota' => 'La cuota de este mes ya fue emitida.']);
             }
@@ -71,7 +73,7 @@ class quotaController extends Controller
             ]);
 
             // 🔔 Enviar correo de éxito
-            Mail::to('AlGusOf10@gmail.com')->send(new QuotaGeneratedMail($quota, 'success'));
+            // Mail::to('AlGusOf10@gmail.com')->send(new QuotaGeneratedMail($quota, 'success'));
 
             // Recuperar todos los clientes
             $clients = Client::with('contract')->get();
@@ -93,10 +95,11 @@ class quotaController extends Controller
             return redirect()->route('quota')->with('success', 'Cuota emitida correctamente.');
         } catch (\Exception $e) {
             // Enviar correo de error con detalle
+            /*
             Mail::to('AlGusOf10@gmail.com')->send(
                 new QuotaGeneratedMail(null, 'failed', $e->getMessage())
             );
-
+            */
             return redirect()->back()->withErrors(['quota' => 'Ocurrió un error: ' . $e->getMessage()]);
         }
     }
