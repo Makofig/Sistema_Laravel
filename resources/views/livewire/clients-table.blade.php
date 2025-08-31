@@ -92,7 +92,7 @@
                         </span>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <a href="{{ route('clients.show', $client->id) }}" class="text-indigo-600 hover:text-indigo-900 mr-3">Ver</a>
+                        <a href="{{ route('clients.show', $client->id) }}" class="text-indigo-600 hover:text-indigo-900 mr-3">Show</a>
                         <a href="{{ route('clients.edit', $client->id) }}" class="text-indigo-600 hover:text-indigo-900 mr-3">Edit</a>
                         <form id="delete-client-{{ $client->id }}" 
                             action="{{ route('clients.destroy', $client->id) }}" 

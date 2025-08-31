@@ -57,7 +57,7 @@
                         @endif
                     </td>
                     <td class="px-4 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <a href="{{ route('payments.show', $payment->id) }}" class="text-indigo-600 hover:text-indigo-900 mr-3">Ver</a>
+                        <a href="{{ route('payments.show', $payment->id) }}" class="text-indigo-600 hover:text-indigo-900 mr-3">Show</a>
                         @if ($payment->estado == 1)
                         <button class="text-gray-600 cursor-not-allowed mr-3" disabled>Pay</button>
                         @else
