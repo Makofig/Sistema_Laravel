@@ -38,9 +38,9 @@ class contractController extends Controller
             'megabytes' => 'required|integer|min:1',
             'price' => 'required|numeric|min:0',
         ],[
-            'name.required' => 'El nombre es obligatorio.',
-            'megabytes.required' => 'Los megabytes son obligatorios.',
-            'price.required' => 'El precio es obligatorio.',
+            'name.required' => 'The name is required.',
+            'megabytes.required' => 'Megabytes is mandatory.',
+            'price.required' => 'The price is mandatory.',
         ]);
 
         Contracts::create([
@@ -49,7 +49,7 @@ class contractController extends Controller
             'costo' => $validated['price'],
         ]);
 
-        return redirect()->route('contracts.create')->with('success', 'El plan se creó correctamente.');
+        return redirect()->route('contracts.create')->with('success', 'The contracts was created correctly.');
     }
 
     /**
@@ -81,9 +81,9 @@ class contractController extends Controller
             'megabytes' => 'required|integer|min:1',
             'price' => 'required|numeric|min:0',
         ],[
-            'name.required' => 'El nombre es obligatorio.',
-            'megabytes.required' => 'Los megabytes son obligatorios.',
-            'price.required' => 'El precio es obligatorio.',
+            'name.required' => 'The name is required.',
+            'megabytes.required' => 'Megabytes is mandatory.',
+            'price.required' => 'The price is mandatory.',
         ]);
 
         Contracts::where('id', $id)->update([
@@ -92,7 +92,7 @@ class contractController extends Controller
             'costo' => $validated['price'],
         ]);
 
-        return redirect()->route('contracts.edit', $id)->with('success', 'El plan se actualizo correctamente.');
+        return redirect()->route('contracts.edit', $id)->with('success', 'The contracts was updated successfully.');
     }
 
     /**
@@ -106,6 +106,6 @@ class contractController extends Controller
 
         $contract->delete();
 
-        return redirect()->route('contracts')->with('success', 'Contrato eliminado correctamente');
+        return redirect()->route('contracts')->with('success', 'Contract successfully deleted.');
     }
 }

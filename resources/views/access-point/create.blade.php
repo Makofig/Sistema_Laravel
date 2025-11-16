@@ -40,28 +40,28 @@
                                         <div class="sm:col-span-3">
                                             <label for="ssid" class="block text-sm/6 font-medium text-gray-900">SSID</label>
                                             <div class="mt-2">
-                                                <input id="ssid" type="text" name="ssid" autocomplete="given-name" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
+                                                <input id="ssid" type="text" name="ssid" value="{{ old('ssid') }}" autocomplete="given-name" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
                                             </div>
                                         </div>
 
                                         <div class="sm:col-span-3">
                                             <label for="frequency" class="block text-sm/6 font-medium text-gray-900">Frequency</label>
                                             <div class="mt-2">
-                                                <input id="frequency" type="text" name="frequency" autocomplete="family-name" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
+                                                <input id="frequency" type="text" name="frequency" value="{{ old('frequency') }}" autocomplete="family-name" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
                                             </div>
                                         </div>
 
                                         <div class="sm:col-span-3">
                                             <label for="ip_address" class="block text-sm/6 font-medium text-gray-900">IP Address</label>
                                             <div class="mt-2">
-                                                <input id="ip_address" type="text" name="ip_address" autocomplete="ip_address" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
+                                                <input id="ip_address" type="text" name="ip_address" value="{{ old('ip_address') }}" autocomplete="ip_address" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
                                             </div>
                                         </div>
 
                                         <div class="col-span-full">
                                             <label for="location" class="block text-sm/6 font-medium text-gray-900">Location</label>
                                             <div class="mt-2">
-                                                <input id="location" type="text" name="location" autocomplete="location" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
+                                                <input id="location" type="text" name="location" value="{{ old('location') }}" autocomplete="location" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
                                             </div>
                                         </div>
 

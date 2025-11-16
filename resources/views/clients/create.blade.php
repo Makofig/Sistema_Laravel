@@ -70,7 +70,7 @@
                                         <div class="sm:col-span-3">
                                             <label for="first_name" class="block text-sm/6 font-medium text-gray-900">First name</label>
                                             <div class="mt-2">
-                                                <input id="first_name" type="text" name="first_name" autocomplete="given-name" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
+                                                <input id="first_name" type="text" name="first_name" value="{{ old('first_name') }}" autocomplete="given-name" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
                                                 @error('first_name')
                                                     <span class="text-red-600 text-sm">{{ $message }}</span>
                                                 @enderror
@@ -80,7 +80,7 @@
                                         <div class="sm:col-span-3">
                                             <label for="last_name" class="block text-sm/6 font-medium text-gray-900">Last name</label>
                                             <div class="mt-2">
-                                                <input id="last_name" type="text" name="last_name" autocomplete="family-name" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
+                                                <input id="last_name" type="text" name="last_name" value="{{ old('last_name') }}" autocomplete="family-name" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
                                                 @error('last_name')
                                                     <span class="text-red-600 text-sm">{{ $message }}</span>
                                                 @enderror
@@ -90,7 +90,7 @@
                                         <div class="sm:col-span-4">
                                             <label for="email" class="block text-sm/6 font-medium text-gray-900">Email address</label>
                                             <div class="mt-2">
-                                                <input id="email" type="email" name="email" autocomplete="email" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
+                                                <input id="email" type="email" name="email" value="{{ old('email') }}" autocomplete="email" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
                                                 @error('email')
                                                     <span class="text-red-600 text-sm">{{ $message }}</span>
                                                 @enderror
@@ -100,7 +100,7 @@
                                         <div class="sm:col-span-4">
                                             <label for="phone" class="block text-sm/6 font-medium text-gray-900">Phone</label>
                                             <div class="mt-2">
-                                                <input id="phone" type="tel" name="phone" autocomplete="tel" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
+                                                <input id="phone" type="tel" name="phone" value="{{ old('phone') }}" autocomplete="tel" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
                                                 @error('phone')
                                                     <span class="text-red-600 text-sm">{{ $message }}</span>
                                                 @enderror
@@ -110,7 +110,7 @@
                                         <div class="sm:col-span-3">
                                             <label for="ip_address" class="block text-sm/6 font-medium text-gray-900">IP Address</label>
                                             <div class="mt-2">
-                                                <input id="ip_address" type="text" name="ip_address" autocomplete="ip_address" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
+                                                <input id="ip_address" type="text" name="ip_address" value="{{ old('ip_address') }}" autocomplete="ip_address" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
                                                 @error('ip_address')
                                                     <span class="text-red-600 text-sm">{{ $message }}</span>
                                                 @enderror
@@ -123,7 +123,7 @@
                                                 <select id="contracts_id" name="contracts_id" autocomplete="contracts_id-name" class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
                                                     <option>Select a contract</option>
                                                     @foreach ($contracts as $contract)
-                                                        <option value="{{ $contract->id }}">{{ $contract->megabytes }}</option>
+                                                        <option value="{{ $contract->id }} {{ old('contracts_id') == $contract->id ? 'selected' : '' }}">{{ $contract->megabytes }}</option>
                                                     @endforeach
                                                 </select>
                                                 @error('contracts_id')
@@ -141,7 +141,7 @@
                                                 <select id="access_point_id" name="access_point_id" autocomplete="access_point_id-name" class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
                                                     <option>Select a point</option>
                                                     @foreach ($points as $point)
-                                                        <option value="{{ $point->id }}">{{ $point->ssid }}</option>
+                                                        <option value="{{ $point->id }} {{ old('access_point_id') == $point->id ? 'selected' : ''}}">{{ $point->ssid }}</option>
                                                     @endforeach
                                                 </select>
                                                 @error('access_point_id')
@@ -156,7 +156,7 @@
                                         <div class="col-span-full">
                                             <label for="street_address" class="block text-sm/6 font-medium text-gray-900">Street address</label>
                                             <div class="mt-2">
-                                                <input id="street_address" type="text" name="street_address" autocomplete="street_address" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
+                                                <input id="street_address" type="text" name="street_address" value="{{ old('street_address') }}" autocomplete="street_address" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
                                                 @error('street_address')
                                                     <span class="text-red-600 text-sm">{{ $message }}</span>
                                                 @enderror

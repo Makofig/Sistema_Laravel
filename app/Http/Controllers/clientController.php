@@ -65,16 +65,16 @@ class clientController extends Controller
             'file_upload' => 'nullable|image|max:2048',
         ], [
             // Mensajes personalizados
-            'first_name.required'      => 'El nombre no puede estar vacío.',
-            'last_name.required'       => 'El apellido no puede estar vacío.',
-            'phone.required'           => 'El número de teléfono es obligatorio.',
-            'contracts_id.required'    => 'Debe seleccionar un plan.',
-            'contracts_id.exists'      => 'El plan seleccionado no es válido.',
-            'access_point_id.required' => 'Debe seleccionar un punto de acceso.',
-            'access_point_id.exists'   => 'El punto de acceso seleccionado no es válido.',
-            'street_address.required'  => 'La dirección es obligatoria.',
-            'file_upload.image'        => 'El archivo debe ser una imagen válida.',
-            'file_upload.max'          => 'La imagen no puede superar los 2 MB.',
+            'first_name.required'      => 'The name cannot be empty.',
+            'last_name.required'       => 'The surname cannot be empty.',
+            'phone.required'           => 'A phone number is required.',
+            'contracts_id.required'    => 'You must select a contract.',
+            'contracts_id.exists'      => 'The selected contract is not valid.',
+            'access_point_id.required' => 'You must select an access point.',
+            'access_point_id.exists'   => 'The selected access point in not valid.',
+            'street_address.required'  => 'The address is required.',
+            'file_upload.image'        => 'The file must be a valid image.',
+            'file_upload.max'          => 'The image cannot exceed 2 MB.',
         ]);
         // Guardar imagen si viene en la petición
         if ($request->hasFile('file_upload')) {
@@ -95,7 +95,7 @@ class clientController extends Controller
         ]);
         // $client->save();
 
-        return redirect()->route('clients.create')->with('success', 'Cliente creado correctamente');
+        return redirect()->route('clients.create')->with('success', 'Client created successfully');
     }
 
     /**
@@ -144,16 +144,16 @@ class clientController extends Controller
             'file_upload' => 'nullable|image|max:2048',
         ], [
             // Mensajes personalizados
-            'first_name.required'      => 'El nombre no puede estar vacío.',
-            'last_name.required'       => 'El apellido no puede estar vacío.',
-            'phone.required'           => 'El número de teléfono es obligatorio.',
-            'contracts_id.required'    => 'Debe seleccionar un plan.',
-            'contracts_id.exists'      => 'El plan seleccionado no es válido.',
-            'access_point_id.required' => 'Debe seleccionar un punto de acceso.',
-            'access_point_id.exists'   => 'El punto de acceso seleccionado no es válido.',
-            'street_address.required'  => 'La dirección es obligatoria.',
-            'file_upload.image'        => 'El archivo debe ser una imagen válida.',
-            'file_upload.max'          => 'La imagen no puede superar los 2 MB.',
+            'first_name.required'      => 'The name cannot be empty.',
+            'last_name.required'       => 'The surname cannot be empty.',
+            'phone.required'           => 'A phone number is required.',
+            'contracts_id.required'    => 'You must select a contract.',
+            'contracts_id.exists'      => 'The selected contract is not valid.',
+            'access_point_id.required' => 'You must select an access point.',
+            'access_point_id.exists'   => 'The selected access point in not valid.',
+            'street_address.required'  => 'The address is required.',
+            'file_upload.image'        => 'The file must be a valid image.',
+            'file_upload.max'          => 'The image cannot exceed 2 MB.',
         ]);
 
         $client = Client::findOrFail($id);
@@ -186,7 +186,7 @@ class clientController extends Controller
         ]);
         // $client->save();
 
-        return redirect()->route('clients.edit', $client->id)->with('success', 'Cliente actualizado correctamente');
+        return redirect()->route('clients.edit', $client->id)->with('success', 'Client successfully updated.');
     }
 
     /**
@@ -204,6 +204,6 @@ class clientController extends Controller
 
         $client->delete();
 
-        return redirect()->route('clients')->with('success', 'Cliente eliminado correctamente');
+        return redirect()->route('clients')->with('success', 'Client successfully removed.');
     }
 }

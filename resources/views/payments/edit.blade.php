@@ -119,14 +119,14 @@
 <script>
     function confirmUpdate(paymentId) {
         Swal.fire({
-            title: '¿Estás seguro?',
-            text: "Esta acción no se puede deshacer",
+            title: 'You\'re sure?',
+            text: "This action will update the payment details.",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#d33',
             cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Sí, Actualizar',
-            cancelButtonText: 'Cancelar'
+            confirmButtonText: 'Yes, update it!',
+            cancelButtonText: 'Cancel'
         }).then((result) => {
             if (result.isConfirmed) {
                 document.getElementById(`update-${paymentId}`).submit();
@@ -152,7 +152,7 @@
             if (value < priceValue) {
                 amountInput.classList.remove("border-green-500");
                 amountInput.classList.add("border-red-500");
-                errorMessage.textContent = `El monto ingresado es menor al precio de la cuota ($${priceValue.toFixed(2)}).`;
+                errorMessage.textContent = `The amount entered is less than the price of the installment ($${priceValue.toFixed(2)}).`;
                 errorMessage.classList.remove("hidden");
                 errorMessage.classList.add("text-red-600");
             } else if (value === priceValue) {
@@ -165,7 +165,7 @@
             } else {
                 amountInput.classList.remove("border-green-500");
                 amountInput.classList.add("border-red-500");
-                errorMessage.textContent = `El monto no puede superar el valor de la cuota ($${priceValue.toFixed(2)}).`;
+                errorMessage.textContent = `The amount cannot exceed the value of the installment ($${priceValue.toFixed(2)}).`;
                 errorMessage.classList.remove("hidden");
                 errorMessage.classList.add("text-red-600");
             }

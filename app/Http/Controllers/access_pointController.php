@@ -37,10 +37,10 @@ class access_pointController extends Controller
             'ip_address' => 'nullable|ip',
             'location' => 'required|string|max:255',
         ],[
-            'ssid.required' => 'El SSID es obligatorio.',
-            'frequency.required' => 'La frecuencia es obligatoria.',
-            'ip_address.ip' => 'La dirección IP debe ser válida.',
-            'location.required' => 'La ubicación es obligatoria.',
+            'ssid.required' => 'The SSID is required.',
+            'frequency.required' => 'Frequency is mandatory.',
+            'ip_address.ip' => 'The IP address must be valid.',
+            'location.required' => 'Location is required.',
         ]);
 
         Access_Point::create([
@@ -83,10 +83,10 @@ class access_pointController extends Controller
             'ip_address' => 'nullable|ip',
             'location' => 'required|string|max:255',
         ],[
-            'ssid.required' => 'El SSID es obligatorio.',
-            'frequency.required' => 'La frecuencia es obligatoria.',
-            'ip_address.ip' => 'La dirección IP debe ser válida.',
-            'location.required' => 'La ubicación es obligatoria.',
+            'ssid.required' => 'The SSID is required.',
+            'frequency.required' => 'Frequency is mandatory.',
+            'ip_address.ip' => 'The IP address must be valid.',
+            'location.required' => 'Location is required.',
         ]);
 
         Access_Point::where('id', $id)->update([
@@ -96,7 +96,7 @@ class access_pointController extends Controller
             'localidad' => $validated['location'],
         ]);
 
-        return redirect()->route('access-point.edit', $id)->with('success', 'El punto de acceso se actualizo correctamente.');
+        return redirect()->route('access-point.edit', $id)->with('success', 'The Access Point was successfully updated.');
     }
 
     /**
@@ -108,6 +108,6 @@ class access_pointController extends Controller
         $point = Access_Point::findOrFail($id);
         $point->delete();
 
-        return redirect()->route('access-point')->with('success', 'Punto de acceso eliminado correctamente');
+        return redirect()->route('access-point')->with('success', 'Acceess Point successfully removed.');
     }
 }
