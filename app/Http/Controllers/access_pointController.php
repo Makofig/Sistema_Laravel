@@ -58,7 +58,11 @@ class access_pointController extends Controller
      */
     public function show(string $id)
     {
-        //
+        // mostrar la información de un Access Point 
+        $access_point = Access_Point::findOrFail($id);
+        $clients = $access_point->clientes()->paginate(10); 
+
+        return view('access-point.show', compact('access_point', 'clients'));
     }
 
     /**

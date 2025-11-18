@@ -70,6 +70,7 @@
                         </span>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <a href="{{ route('access-point.show', $point->id) }}" class="text-indigo-600 hover:text-indigo-900 mr-3">Show</a>
                         <a href="{{ route('access-point.edit', $point->id) }}" class="text-indigo-600 hover:text-indigo-900 mr-3">Edit</a>
                         <form id="delete-points-{{ $point->id }}" 
                             action="{{ route('access-point.destroy', $point->id) }}" 

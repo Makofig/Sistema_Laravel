@@ -110,6 +110,14 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
+    Route::get('/access-point/show/{id}', [access_pointController::class, 'show'])->name('access-point.show');
+});
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->group(function () {
     Route::get('/access-point/edit/{id}', [access_pointController::class, 'edit'])->name('access-point.edit');
 });
 

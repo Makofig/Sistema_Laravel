@@ -57,7 +57,7 @@ class clientController extends Controller
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'ip_address' => 'nullable|ip',
+            'ip_address' => 'nullable|ip|unique:cliente,ip',
             'phone' => 'required|string|max:20',
             'contracts_id' => 'required|exists:plan,id',
             'access_point_id' => 'required|exists:accespoint,id',
@@ -136,7 +136,7 @@ class clientController extends Controller
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'ip_address' => 'nullable|ip',
+            'ip_address' => 'nullable|ip|unique:cliente,ip,'. $id,
             'phone' => 'required|string|max:20',
             'contracts_id' => 'required|exists:plan,id',
             'access_point_id' => 'required|exists:accespoint,id',
