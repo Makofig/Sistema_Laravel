@@ -3,10 +3,18 @@
         <div class="p-6 space-y-6">
 
             <!-- KPIs -->
-            <div class="grid grid-cols-4 gap-6">
+            <div class="grid grid-cols-6 gap-6">
                 <div class="bg-white p-4 shadow rounded-lg text-center">
-                    <h4 class="text-sm text-gray-500">Total Clientes</h4>
-                    <p class="text-2xl font-bold text-blue-600">{{ $totalClientes }}</p>
+                    <h4 class="text-sm text-gray-500">Pagados</h4>
+                    <p class="text-2xl font-bold text-blue-600">{{ $clientesConPago }}</p>
+                </div>
+                <div class="bg-white p-4 shadow rounded-lg text-center">
+                    <h4 class="text-sm text-gray-500">Deudores</h4>
+                    <p class="text-2xl text-red-600 font-bold">{{ $deudores }}</p>
+                </div>
+                <div class="bg-white p-4 shadow rounded-lg text-center">
+                    <h4 class="text-sm text-gray-500">Baneados</h4>
+                    <p class="text-2xl text-red-600 font-bold">{{ $clientesBaneados }}</p>
                 </div>
                 <div class="bg-white p-4 shadow rounded-lg text-center">
                     <h4 class="text-sm text-gray-500">Recaudado</h4>
@@ -48,10 +56,10 @@
                     <h3 class="text-lg font-semibold mb-4">📊 Puntualidad de Pagos</h3>
                     <canvas id="chartPuntualidad"></canvas>
                 </div>
-                <div class="bg-white p-4 shadow rounded-lg">
+                <!-- <div class="bg-white p-4 shadow rounded-lg">
                     <h3 class="text-lg font-semibold mb-4">💳 Deudores</h3>
                     <p class="text-2xl text-red-600 font-bold">{{ $deudores }}</p>
-                </div>
+                </div> -->
             </div>
 
             <!-- Recaudación + Morosos -->

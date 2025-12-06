@@ -42,6 +42,11 @@
                     </x-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link href="{{ route('clients.banned') }}" :active="request()->routeIs('clients.banned')">
+                        {{ __('Banned') }}
+                    </x-nav-link>
+                </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link href="{{ route('statistics') }}" :active="request()->routeIs('statistics')">
                         {{ __('Statistics') }}
                     </x-nav-link>

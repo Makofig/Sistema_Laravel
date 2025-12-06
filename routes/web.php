@@ -53,6 +53,14 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
+    Route::get('/clients/banned', [clientController::class, 'banned'])->name('clients.banned');
+});
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->group(function () {
     Route::get('/clients/edit/{id}', [clientController::class, 'edit'])->name('clients.edit');
 });
 

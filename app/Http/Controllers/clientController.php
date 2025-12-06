@@ -30,6 +30,11 @@ class clientController extends Controller
         return view('clients.debtors', compact('debtors'));
     }
 
+    public function banned(){
+        //$bannedClients = Client::where('is_banned', true)->paginate(10);
+        return view('clients.banned'); //compact('bannedClients'));
+    }
+
     /**
      * Show the form for creating a new resource.
      */

@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\Client;
 use App\Models\Quota;
 use App\Models\Payments;
+use App\Models\Contracts;
 use Illuminate\Support\Facades\DB;
 
 class Dashboard extends Component
@@ -18,6 +19,7 @@ class Dashboard extends Component
     public $paymentStatuses;
     public $topDebtors;
     public $topPayers;
+    public $totalMegabytesUsed; 
 
     public function mount()
     {
@@ -32,6 +34,10 @@ class Dashboard extends Component
 
         // ❌ Total deuda (sumamos los montos de los no pagados)
         $this->totalDebt = Payments::where('estado', '0')->sum('costo');
+
+        // Total de megabytes usados (suma de megas consumidos por todos los clientes)
+        $this->totalMegabytesUsed = Client::join('plan', 'cliente.id_plan', '=', 'plan.id')
+            ->sum('plan.megabytes'); 
 
         // 📊 Pagos por mes (según fecha de creación o período)
         $this->paymentsPerMonth = Payments::selectRaw('DATE_FORMAT(created_at, "%Y-%m") as month, SUM(abonado) as totalPagado, SUM(costo) as totalCuotas')
