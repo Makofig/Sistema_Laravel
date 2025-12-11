@@ -8,6 +8,7 @@ use App\Models\Access_Point;
 use App\Models\Payments;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Barryvdh\DomPDF\Facade\Pdf; 
 
 class clientController extends Controller
 {
@@ -210,5 +211,42 @@ class clientController extends Controller
         $client->delete();
 
         return redirect()->route('clients')->with('success', 'Client successfully removed.');
+    }
+
+    public function exportPdf($type)
+    {
+        // Si NO se envían año/mes → usar actuales
+        $anio = request('anio') ?: now()->year; 
+        $mes = request('mes') ?: now()->month; 
+        // debug 
+        // dd($anio, $mes); 
+
+        // $anio = $anio ?: now()->year;
+        // $mes  = $mes ?: now()->month;
+
+        $query = Client::query()->with('contract'); 
+
+        if ($type === 'banned') {
+            $query->where('is_banned', 1); 
+        }
+
+        if ($type == 'debtors') {
+            $query->whereHas('pagos', function ($q) use ($anio, $mes) {
+                $q->where('estado', '0')
+                  ->whereYear('created_at', $anio)
+                  ->whereMonth('created_at', $mes);
+            });
+        }
+
+        // === Filtro por año/mes para created_at ===
+        // $query->whereYear('created_at', $anio)
+        //     ->whereMonth('created_at', $mes);
+
+        $clients = $query->get();
+
+        $pdf = Pdf::loadView('exports.clients', compact('clients', 'type', 'anio', 'mes'))
+            ->setPaper('a4', 'portrait'); 
+
+        return $pdf->download("clients_{$type}_" . date('Ymd_His') . '.pdf');
     }
 }

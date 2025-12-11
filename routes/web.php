@@ -88,6 +88,14 @@ Route::middleware([
     Route::get('/clients/show/{id}', [clientController::class, 'show'])->name('clients.show');
 });
 
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->group(function (){
+    Route::get('/clients/export/{type}', [clientController::class, 'exportPdf'])->name('clients.export');
+});
+
 // Ruta de los access points 
 Route::middleware([
     'auth:sanctum',

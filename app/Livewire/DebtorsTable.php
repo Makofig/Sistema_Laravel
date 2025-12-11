@@ -42,6 +42,15 @@ class DebtorsTable extends Component
         $this->resetPage();
     }
 
+    public function export()
+    {
+        return redirect()->route('clients.export', [
+            'type' => 'debtors',
+            'anio' => $this->anio,
+            'mes'  => $this->mes,
+        ]);
+    }
+
     public function render()
     {
         $debtors = Client::select('cliente.*', 'pagos.id as pago_id', 'pagos.estado as pago_estado')
