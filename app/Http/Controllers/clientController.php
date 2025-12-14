@@ -60,7 +60,7 @@ class clientController extends Controller
             'ip_address' => 'nullable|ip|unique:cliente,ip',
             'phone' => 'required|string|max:20',
             'contracts_id' => 'required|exists:plan,id',
-            'access_point_id' => 'required|exists:accespoint,id',
+            'access_point_id' => 'required|exists:accesspoint,id',
             'street_address' => 'required|string|max:255',
             'file_upload' => 'nullable|image|max:2048',
         ], [
@@ -139,7 +139,7 @@ class clientController extends Controller
             'ip_address' => 'nullable|ip|unique:cliente,ip,'. $id,
             'phone' => 'required|string|max:20',
             'contracts_id' => 'required|exists:plan,id',
-            'access_point_id' => 'required|exists:accespoint,id',
+            'access_point_id' => 'required|exists:accesspoint,id',
             'street_address' => 'required|string|max:255',
             'file_upload' => 'nullable|image|max:2048',
         ], [

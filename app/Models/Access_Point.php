@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Access_Point extends Model
 {
     // Nombre de la tabla
-    protected $table = 'accespoint';
+    protected $table = 'accesspoint';
 
     protected $fillable = [
         'ssid',
