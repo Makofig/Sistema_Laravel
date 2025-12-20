@@ -1,41 +1,60 @@
 <?php
-
 namespace App\Services;
 
 use MercadoPago\SDK;
 use MercadoPago\Preference;
 use MercadoPago\Item;
+use Illuminate\Support\Facades\Log;
 
 class MercadoPagoService
 {
-    public function __construct()
+    protected bool $initialized = false;
+
+    protected function init(): void
     {
-        SDK::setAccessToken(config('mercadopago.access_token'));
+        if ($this->initialized) {
+            return;
+        }
+
+        $token = config('services.mercadopago.token');
+
+        if (!$token) {
+            throw new \Exception('MercadoPago token no configurado');
+        }
+
+        SDK::setAccessToken($token);
+
+        // ⏱️ timeout global del SDK
+        SDK::setRequestTimeout(5000); // 5 segundos
+
+        $this->initialized = true;
     }
 
     public function crearLinkPago(array $data): string
     {
-        $preference = new Preference();
+        $this->init();
 
-        $item = new Item();
-        $item->title = $data['title'];
-        $item->quantity = 1;
-        $item->unit_price = (float) $data['price'];
+        try {
+            $preference = new Preference();
 
-        $preference->items = [$item];
-        $preference->external_reference = (string) $data['external_reference'];
+            $item = new Item();
+            $item->title = $data['title'];
+            $item->quantity = 1;
+            $item->unit_price = (float) $data['price'];
 
-        // URLs opcionales (después las usamos mejor)
-        $preference->back_urls = [
-            'success' => env('APP_URL') . '/pago-exitoso',
-            'failure' => env('APP_URL') . '/pago-fallido',
-            'pending' => env('APP_URL') . '/pago-pendiente',
-        ];
+            $preference->items = [$item];
+            $preference->external_reference = (string) $data['external_reference'];
 
-        $preference->auto_return = 'approved';
+            $preference->save();
 
-        $preference->save();
+            return $preference->init_point;
+        } catch (\Throwable $e) {
+            Log::error('MercadoPago error', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
 
-        return $preference->init_point;
+            throw new \Exception('Error al crear link de pago');
+        }
     }
 }

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Access_Point;
 use Illuminate\Http\Request;
 
-class access_pointController extends Controller
+class AccesspointController extends Controller
 {
     /**
      * Display a listing of the resource.

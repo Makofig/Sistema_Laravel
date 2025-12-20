@@ -3,11 +3,11 @@
 use Illuminate\Support\Facades\Route;
 
 // Import controladores 
-use App\Http\Controllers\clientController; 
-use App\Http\Controllers\contractController;
-use App\Http\Controllers\access_pointController;
-use App\Http\Controllers\paymentController;
-use App\Http\Controllers\quotaController;
+use App\Http\Controllers\ClientController; 
+use App\Http\Controllers\ContractController;
+use App\Http\Controllers\AccesspointController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\QuotaController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -29,7 +29,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/clients', [clientController::class, 'index'])->name('clients');
+    Route::get('/clients', [ClientController::class, 'index'])->name('clients');
 });
 
 Route::middleware([
@@ -37,7 +37,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/clients/create', [clientController::class, 'create'])->name('clients.create');
+    Route::get('/clients/create', [ClientController::class, 'create'])->name('clients.create');
 });
 
 Route::middleware([
@@ -45,7 +45,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::post('/clients/store', [clientController::class, 'store'])->name('clients.store');
+    Route::post('/clients/store', [ClientController::class, 'store'])->name('clients.store');
 });
 
 Route::middleware([
@@ -53,7 +53,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/clients/banned', [clientController::class, 'banned'])->name('clients.banned');
+    Route::get('/clients/banned', [ClientController::class, 'banned'])->name('clients.banned');
 });
 
 Route::middleware([
@@ -61,7 +61,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/clients/edit/{id}', [clientController::class, 'edit'])->name('clients.edit');
+    Route::get('/clients/edit/{id}', [ClientController::class, 'edit'])->name('clients.edit');
 });
 
 Route::middleware([
@@ -69,7 +69,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::put('/clients/update/{id}', [clientController::class, 'update'])->name('clients.update');
+    Route::put('/clients/update/{id}', [ClientController::class, 'update'])->name('clients.update');
 });
 
 Route::middleware([
@@ -77,7 +77,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::delete('/clients/destroy/{id}', [clientController::class, 'destroy'])->name('clients.destroy');
+    Route::delete('/clients/destroy/{id}', [ClientController::class, 'destroy'])->name('clients.destroy');
 });
 
 Route::middleware([
@@ -85,7 +85,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/clients/show/{id}', [clientController::class, 'show'])->name('clients.show');
+    Route::get('/clients/show/{id}', [ClientController::class, 'show'])->name('clients.show');
 });
 
 Route::middleware([
@@ -93,7 +93,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function (){
-    Route::get('/clients/export/{type}', [clientController::class, 'exportPdf'])->name('clients.export');
+    Route::get('/clients/export/{type}', [ClientController::class, 'exportPdf'])->name('clients.export');
 });
 
 // Ruta de los access points 
@@ -102,7 +102,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/access-point', [access_pointController::class, 'index'])->name('access-point');
+    Route::get('/access-point', [AccesspointController::class, 'index'])->name('access-point');
 });
 
 Route::middleware([
@@ -110,7 +110,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::post('/access-point/store', [access_pointController::class, 'store'])->name('access-point.store');
+    Route::post('/access-point/store', [AccesspointController::class, 'store'])->name('access-point.store');
 });
 
 Route::middleware([
@@ -118,7 +118,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/access-point/create', [access_pointController::class, 'create'])->name('access-point.create');
+    Route::get('/access-point/create', [AccesspointController::class, 'create'])->name('access-point.create');
 });
 
 Route::middleware([
@@ -126,7 +126,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/access-point/show/{id}', [access_pointController::class, 'show'])->name('access-point.show');
+    Route::get('/access-point/show/{id}', [AccesspointController::class, 'show'])->name('access-point.show');
 });
 
 Route::middleware([
@@ -134,7 +134,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/access-point/edit/{id}', [access_pointController::class, 'edit'])->name('access-point.edit');
+    Route::get('/access-point/edit/{id}', [AccesspointController::class, 'edit'])->name('access-point.edit');
 });
 
 Route::middleware([
@@ -142,7 +142,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::put('/access-point/update/{id}', [access_pointController::class, 'update'])->name('access-point.update');
+    Route::put('/access-point/update/{id}', [AccesspointController::class, 'update'])->name('access-point.update');
 });
 
 Route::middleware([
@@ -150,7 +150,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::delete('/access-point/destroy/{id}', [access_pointController::class, 'destroy'])->name('access-point.destroy');
+    Route::delete('/access-point/destroy/{id}', [AccesspointController::class, 'destroy'])->name('access-point.destroy');
 });
 
 // Ruta de los planes 
@@ -159,7 +159,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/contracts', [contractController::class, 'index'])->name('contracts');
+    Route::get('/contracts', [ContractController::class, 'index'])->name('contracts');
 });
 
 Route::middleware([
@@ -167,7 +167,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/contracts/create', [contractController::class, 'create'])->name('contracts.create');
+    Route::get('/contracts/create', [ContractController::class, 'create'])->name('contracts.create');
 });
 
 Route::middleware([
@@ -175,7 +175,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::post('/contracts/store', [contractController::class, 'store'])->name('contracts.store');
+    Route::post('/contracts/store', [ContractController::class, 'store'])->name('contracts.store');
 });
 
 Route::middleware([
@@ -183,7 +183,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/contracts/edit/{id}', [contractController::class, 'edit'])->name('contracts.edit');
+    Route::get('/contracts/edit/{id}', [ContractController::class, 'edit'])->name('contracts.edit');
 });
 
 Route::middleware([
@@ -191,7 +191,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::put('/contracts/update/{id}', [contractController::class, 'update'])->name('contracts.update');
+    Route::put('/contracts/update/{id}', [ContractController::class, 'update'])->name('contracts.update');
 });
 
 Route::middleware([
@@ -199,7 +199,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::delete('/contracts/destroy/{id}', [contractController::class, 'destroy'])->name('contracts.destroy');
+    Route::delete('/contracts/destroy/{id}', [ContractController::class, 'destroy'])->name('contracts.destroy');
 });
 
 Route::middleware([
@@ -207,7 +207,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/quota', [quotaController::class, 'index'])->name('quota');
+    Route::get('/quota', [QuotaController::class, 'index'])->name('quota');
 });
 
 Route::middleware([
@@ -215,7 +215,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/quota/create', [quotaController::class, 'create'])->name('quota.create');
+    Route::get('/quota/create', [QuotaController::class, 'create'])->name('quota.create');
 });
 
 Route::middleware([
@@ -223,7 +223,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::post('/quota/store', [quotaController::class, 'store'])->name('quota.store');
+    Route::post('/quota/store', [QuotaController::class, 'store'])->name('quota.store');
 });
 
 Route::middleware([
@@ -231,7 +231,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/clients/debtors', [clientController::class, 'debtors'])->name('debtors');
+    Route::get('/clients/debtors', [ClientController::class, 'debtors'])->name('debtors');
 });
 
 Route::middleware([
@@ -249,7 +249,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/payments/show/{id}', [paymentController::class, 'show'])->name('payments.show');
+    Route::get('/payments/show/{id}', [PaymentController::class, 'show'])->name('payments.show');
 });
 
 Route::middleware([
@@ -257,7 +257,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/payments/edit/{id}', [paymentController::class, 'edit'])->name('payments.edit');
+    Route::get('/payments/edit/{id}', [PaymentController::class, 'edit'])->name('payments.edit');
 });
 
 Route::middleware([
@@ -265,5 +265,5 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::put('/payments/update/{id}', [paymentController::class, 'update'])->name('payments.update');
+    Route::put('/payments/update/{id}', [PaymentController::class, 'update'])->name('payments.update');
 });

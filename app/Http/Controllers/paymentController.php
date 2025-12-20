@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Client;
 use App\Models\Quota;
-use App\Services\MercadoPagoService;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use App\Models\Payments;
+use App\Services\MercadoPagoService;
 
-class paymentController extends Controller
+class PaymentController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -70,15 +70,15 @@ class paymentController extends Controller
             'coment' => 'required|string|max:255',
             'payment_date' => 'required|date',
             'voucher' => 'nullable|file|mimes:jpg,png,pdf|max:2048',
-        ]); 
+        ]);
 
         // Encontrar el pago
         $payment = Payments::findOrFail($id);
 
-       // Armamos el array de actualización
+        // Armamos el array de actualización
         $data = [
-            'abonado'    => $validated['amount'],
-            'estado'     => '1',
+            'abonado' => $validated['amount'],
+            'estado' => '1',
             'comentario' => $validated['coment'],
             'fecha_pago' => $validated['payment_date'],
         ];
@@ -97,10 +97,8 @@ class paymentController extends Controller
         return redirect()->route('clients.show', $payment->id_cliente)->with('success', 'Payment updated successfully.');
     }
 
-    public function generarMensuales(
-        Request $request,
-        MercadoPagoService $mpService
-    ) {
+    public function generarMensuales(Request $request)
+    {
         // 🔐 Seguridad simple por API Key
         if ($request->bearerToken() !== config('app.api_key')) {
             return response()->json(['error' => 'Unauthorized'], 401);
@@ -108,37 +106,42 @@ class paymentController extends Controller
 
         $mes = Carbon::now()->format('Y-m');
 
-        $clientes = Cliente::where('activo', true)->with('plan')->get();
+        // 👉 instanciación LAZY (clave)
+        $mpService = app(MercadoPagoService::class);
+
+        $clientes = Client::where('activo', true)
+            ->with('plan')
+            ->get();
 
         $response = [];
 
         foreach ($clientes as $cliente) {
 
-            // 🛑 Evitar duplicados (idempotencia)
-            $yaExiste = Pago::where('cliente_id', $cliente->id)
-                ->whereMonth('created_at', Carbon::now()->month)
-                ->whereYear('created_at', Carbon::now()->year)
+            // 🛑 Idempotencia
+            $yaExiste = Payments::where('cliente_id', $cliente->id)
+                ->whereMonth('created_at', now()->month)
+                ->whereYear('created_at', now()->year)
                 ->exists();
 
             if ($yaExiste) {
                 continue;
             }
 
-            // 1️⃣ Crear cuota
-            $cuota = Cuota::create([
+            // 1️⃣ Cuota
+            $cuota = Quota::create([
                 'numero' => $mes
             ]);
 
-            // 2️⃣ Crear pago
-            $pago = Pago::create([
+            // 2️⃣ Pago
+            $pago = Payments::create([
                 'cliente_id' => $cliente->id,
-                'cuota_id'   => $cuota->id,
+                'cuota_id' => $cuota->id,
                 'num_cuotas' => 1,
-                'costo'      => $cliente->plan->costo,
-                'estado'     => false
+                'costo' => $cliente->plan->costo,
+                'estado' => false
             ]);
 
-            // 3️⃣ Crear link MercadoPago
+            // 3️⃣ Link MercadoPago
             $linkPago = $mpService->crearLinkPago([
                 'title' => "Internet {$mes} - {$cliente->plan->nombre}",
                 'price' => $cliente->plan->costo,
@@ -150,13 +153,12 @@ class paymentController extends Controller
                 'link_pago' => $linkPago
             ]);
 
-            // 5️⃣ Respuesta para n8n
             $response[] = [
                 'cliente_id' => $cliente->id,
-                'nombre'     => $cliente->nombre,
-                'email'      => $cliente->email,
-                'telefono'   => $cliente->telefono,
-                'link_pago'  => $linkPago
+                'nombre' => $cliente->nombre,
+                'email' => $cliente->email,
+                'telefono' => $cliente->telefono,
+                'link_pago' => $linkPago
             ];
         }
 
@@ -166,6 +168,7 @@ class paymentController extends Controller
             'pagos' => $response
         ]);
     }
+
 
     /**
      * Remove the specified resource from storage.

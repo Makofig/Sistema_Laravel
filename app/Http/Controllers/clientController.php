@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Barryvdh\DomPDF\Facade\Pdf; 
 
-class clientController extends Controller
+class ClientController extends Controller
 {
     /**
      * Display a listing of the resource.

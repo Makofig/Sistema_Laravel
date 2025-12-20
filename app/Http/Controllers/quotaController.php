@@ -10,7 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\QuotaGeneratedMail;
 
-class quotaController extends Controller
+class QuotaController extends Controller
 {
     /**
      * Display a listing of the resource.
