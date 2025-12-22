@@ -24,6 +24,11 @@
                 @endforeach
             </select>
         </div>
+        <button
+            wire:click="export"
+            class="border px-4 py-2 rounded-md text-white bg-red-600 hover:bg-red-700">
+            Export PDF
+        </button>
     </div>
     <!-- Table -->
     <div class="overflow-x-auto">

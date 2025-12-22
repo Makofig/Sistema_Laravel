@@ -23,7 +23,8 @@ class Client extends Model
         'direccion',
         'telefono',
         'ip',
-        'imagen'
+        'imagen',
+        'is_banned'
     ]; 
 
     // Relación con el modelo de contratos uno a uno. 

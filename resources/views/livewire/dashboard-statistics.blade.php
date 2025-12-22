@@ -3,7 +3,7 @@
         <h2 class="text-2xl font-bold mb-6">📊 Dashboard</h2>
 
         <!-- Métricas rápidas -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8">
             <div class="bg-white p-4 shadow rounded-lg">
                 <p class="text-gray-600">Clientes</p>
                 <h3 class="text-2xl font-bold">{{ $totalClients }}</h3>
@@ -11,6 +11,10 @@
             <div class="bg-white p-4 shadow rounded-lg">
                 <p class="text-gray-600">Total Cuotas Emitidas</p>
                 <h3 class="text-2xl font-bold">{{ $totalPayments }}</h3>
+            </div>
+            <div class="bg-red-100 p-4 shadow rounded-lg">
+                <p class="text-gray-600">Megabytes</p>
+                <h3 class="text-2xl font-bold text-red-700">{{ number_format($totalMegabytesUsed, 0) }} MB</h3>
             </div>
             <div class="bg-green-100 p-4 shadow rounded-lg">
                 <p class="text-gray-600">Pagado</p>

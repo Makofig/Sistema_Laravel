@@ -86,10 +86,23 @@
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800 ">{{ $client->debtors_count }}</div>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
+                    <!-- <td class="px-6 py-4 whitespace-nowrap">
                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                             Active
                         </span>
+                    </td> -->
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        @if ($client->is_banned)
+                            <button wire:click="toggleBan({{ $client->id }})" 
+                                    class="px-2 py-1 rounded bg-green-300 text-green-800">
+                                Unban
+                            </button>
+                        @else
+                            <button wire:click="toggleBan({{ $client->id }})" 
+                                    class="px-2 py-1 rounded bg-red-300 text-red-800">
+                                Ban
+                            </button>
+                        @endif
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <a href="{{ route('clients.show', $client->id) }}" class="text-indigo-600 hover:text-indigo-900 mr-3">Show</a>

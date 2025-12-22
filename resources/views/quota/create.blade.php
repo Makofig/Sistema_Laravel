@@ -67,14 +67,14 @@
 <script>
 function confirmCreate() {
     Swal.fire({
-        title: '¿Estás seguro?',
-        text: "Esta acción no se puede deshacer",
+        title: 'You\'re sure?',
+        text: "This action will create the quota for the current month.",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#d33',
         cancelButtonColor: '#3085d6',
-        confirmButtonText: 'Sí, crear',
-        cancelButtonText: 'Cancelar'
+        confirmButtonText: 'Yes, create it!',
+        cancelButtonText: 'Cancel'
     }).then((result) => {
         if (result.isConfirmed) {
             document.getElementById('create-form').submit();

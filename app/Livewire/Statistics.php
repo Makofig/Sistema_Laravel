@@ -24,6 +24,8 @@ class Statistics extends Component
         // Total de clientes
         $totalClientes = Client::count();
 
+        // Clientes baneados 
+        $bannedClients = Client::where('is_banned', true)->count();
         // 💰 Recaudado y esperado (evitamos NULLs en fecha_pago)
         $recaudado = Payments::whereNotNull('fecha_pago')
             ->whereMonth('fecha_pago', $this->mes)
@@ -98,6 +100,8 @@ class Statistics extends Component
 
         return view('livewire.statistics', [
             'totalClientes' => $totalClientes,
+            'clientesConPago' => $clientesConPago,
+            'clientesBaneados' => $bannedClients,
             'recaudado'     => $recaudado,
             'pendiente'     => $pendiente,
             'morosidad'     => $morosidad,

@@ -63,7 +63,7 @@ class quotaController extends Controller
                 );
                 */
 
-                return redirect()->back()->withErrors(['quota' => 'La cuota de este mes ya fue emitida.']);
+                return redirect()->back()->withErrors(['quota' => 'This month\'s fee has already been issued.']);
             }
 
             // Crear la cuota
@@ -92,7 +92,7 @@ class quotaController extends Controller
                 ]);
             }
 
-            return redirect()->route('quota')->with('success', 'Cuota emitida correctamente.');
+            return redirect()->route('quota')->with('success', 'Fee issued successfully.');
         } catch (\Exception $e) {
             // Enviar correo de error con detalle
             /*
@@ -100,7 +100,7 @@ class quotaController extends Controller
                 new QuotaGeneratedMail(null, 'failed', $e->getMessage())
             );
             */
-            return redirect()->back()->withErrors(['quota' => 'Ocurrió un error: ' . $e->getMessage()]);
+            return redirect()->back()->withErrors(['quota' => 'An error occurred: ' . $e->getMessage()]);
         }
     }
 

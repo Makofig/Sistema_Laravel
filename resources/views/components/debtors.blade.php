@@ -6,11 +6,9 @@
                 <div>
                     <h2 class="text-xl font-bold text-gray-800">Clients Debtors</h2>
                     <p class="text-gray-500 mt-1">Manage your clients debtors and their account permissions here.</p>
-                </div>
-
-            </div>            
+                </div>     
+            </div>
         </div>
         @livewire('debtors-table')
     </div>
-</div>
 </div>

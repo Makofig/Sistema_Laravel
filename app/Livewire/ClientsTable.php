@@ -14,8 +14,10 @@ class ClientsTable extends Component
     public $id_plan= null;
     public $contracts; 
     public $search = '';
+    public $onlyBanned = false; 
 
     protected $paginationTheme = 'tailwind';
+    
     
      // Esto hace que search e id_plan estén en el query string
     protected $queryString = [
@@ -23,8 +25,9 @@ class ClientsTable extends Component
         'id_plan' => ['except' => null],
     ];
 
-    public function mount()
+    public function mount($onlyBanned = false) 
     {
+        $this->onlyBanned = $onlyBanned;
         $this->contracts = Contracts::all();
     }
 
@@ -40,6 +43,16 @@ class ClientsTable extends Component
         $this->resetPage();
     }
     
+    public function toggleBan($id)
+    {
+        $client = Client::findOrFail($id);
+
+        $client->update([
+            'is_banned' => !$client->is_banned
+        ]);
+
+        session()->flash('message', $client->is_banned ? 'Client banned.' : 'Client unbanned.');
+    }
     /*
     public function updatingIdPlan()
     {
@@ -66,6 +79,9 @@ class ClientsTable extends Component
                       ->orWhereRaw('LOWER(apellido) LIKE ?', ['%' . $this->search . '%'])
                       ->orWhereRaw('ip LIKE ?', ['%' . $this->search . '%']);
                 });
+            })
+            ->when($this->onlyBanned, function ($query){
+                $query->where('is_banned', 1); // o el campo que uses
             })
             ->paginate(10);
 

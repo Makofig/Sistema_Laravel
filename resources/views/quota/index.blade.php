@@ -8,7 +8,7 @@
     <script>
         Swal.fire({
             icon: 'success',
-            title: '¡Hecho!',
+            title: '¡Made!',
             text: `{{ session('success') }}`,
             timer: 2000,
             showConfirmButton: false

@@ -25,7 +25,7 @@ updated_at TIMESTAMP,
 CONSTRAINT pk_plan PRIMARY KEY (id)
 )ENGINE=InnoDB;
 
-CREATE TABLE accespoint (
+CREATE TABLE accesspoint (
 id int (100) auto_increment not null, 
 ssid varchar (150) not null,
 frecuencia varchar (50) not null,
@@ -33,7 +33,7 @@ ip_ap varchar (15) not null,
 localidad varchar (100) not null,
 created_at TIMESTAMP, 
 updated_at TIMESTAMP,
-CONSTRAINT pk_accespoint PRIMARY KEY (id)  
+CONSTRAINT pk_accesspoint PRIMARY KEY (id)  
 )ENGINE=InnoDB;
 
 CREATE TABLE cuotas (
@@ -59,7 +59,7 @@ created_at TIMESTAMP,
 updated_at TIMESTAMP,
 CONSTRAINT pk_cliente PRIMARY KEY(id),
 CONSTRAINT fk_cliente_plan FOREIGN KEY(id_plan) REFERENCES plan(id),
-CONSTRAINT fk_cliente_accespoint FOREIGN KEY(id_point) REFERENCES accespoint (id)   
+CONSTRAINT fk_cliente_accesspoint FOREIGN KEY(id_point) REFERENCES accesspoint (id)   
 )ENGINE=InnoDB; 
 
 CREATE TABLE pagos(

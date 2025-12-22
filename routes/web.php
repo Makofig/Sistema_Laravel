@@ -53,6 +53,14 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
+    Route::get('/clients/banned', [clientController::class, 'banned'])->name('clients.banned');
+});
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->group(function () {
     Route::get('/clients/edit/{id}', [clientController::class, 'edit'])->name('clients.edit');
 });
 
@@ -80,6 +88,14 @@ Route::middleware([
     Route::get('/clients/show/{id}', [clientController::class, 'show'])->name('clients.show');
 });
 
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->group(function (){
+    Route::get('/clients/export/{type}', [clientController::class, 'exportPdf'])->name('clients.export');
+});
+
 // Ruta de los access points 
 Route::middleware([
     'auth:sanctum',
@@ -103,6 +119,14 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/access-point/create', [access_pointController::class, 'create'])->name('access-point.create');
+});
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->group(function () {
+    Route::get('/access-point/show/{id}', [access_pointController::class, 'show'])->name('access-point.show');
 });
 
 Route::middleware([
