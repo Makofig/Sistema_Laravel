@@ -1,9 +1,10 @@
 <?php
+
 namespace App\Services;
 
-use MercadoPago\SDK;
-use MercadoPago\Preference;
-use MercadoPago\Item;
+use MercadoPago\MercadoPagoConfig;
+use MercadoPago\Client\Preference\PreferenceClient;
+use MercadoPago\Exceptions\MPApiException;
 use Illuminate\Support\Facades\Log;
 
 class MercadoPagoService
@@ -22,39 +23,75 @@ class MercadoPagoService
             throw new \Exception('MercadoPago token no configurado');
         }
 
-        SDK::setAccessToken($token);
-
-        // ⏱️ timeout global del SDK
-        SDK::setRequestTimeout(5000); // 5 segundos
+        MercadoPagoConfig::setAccessToken($token);
+        MercadoPagoConfig::setRuntimeEnviroment(MercadoPagoConfig::LOCAL);
 
         $this->initialized = true;
     }
 
-    public function crearLinkPago(array $data): string
+    public function crearLinkPago(): array
     {
         $this->init();
 
         try {
-            $preference = new Preference();
+            $client = new PreferenceClient();
 
-            $item = new Item();
-            $item->title = $data['title'];
-            $item->quantity = 1;
-            $item->unit_price = (float) $data['price'];
+            $preference = $client->create([
+                "auto_return" => "approved",
+                "back_urls" => [
+                    "success" => "https://www.httpbin.org/get?back_url=success",
+                    "failure" => "https://www.httpbin.org/get?back_url=failure",
+                    "pending" => "https://www.httpbin.org/get?back_url=pending"
+                ],
+                "statement_descriptor" => "TestStore",
+                "binary_mode" => false,
+                "external_reference" => "IWD1238971",
+                "items" => [
+                    [
+                        "id" => "010983098",
+                        "title" => "My Product",
+                        "quantity" => 1,
+                        "unit_price" => 1000,
+                        "description" => "Description of my product",
+                        "category_id" => "retail",
+                    ]
+                ],
+                "payer" => [
+                    "email" => "test_user_12398378192@testuser.com",
+                ],
+                "payment_methods" => [
+                    "installments" => 12,
+                    "default_payment_method_id" => "account_money",
+                ],
+                "notification_url" => "https://www.your-site.com/webhook",
+            ]);
 
-            $preference->items = [$item];
-            $preference->external_reference = (string) $data['external_reference'];
+            return [
+                "id" => $preference->id,
+                "init_point" => $preference->init_point,
+                "sandbox_init_point" => $preference->sandbox_init_point,
+            ];
 
-            $preference->save();
+        } catch (MPApiException $e) {
+            Log::error('MercadoPago API error', [
+                'status' => $e->getApiResponse()->getStatusCode(),
+                'content' => $e->getApiResponse()->getContent(),
+            ]);
 
-            return $preference->init_point;
+            throw new \Exception('Error MercadoPago API');
         } catch (\Throwable $e) {
             Log::error('MercadoPago error', [
                 'message' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
             ]);
 
             throw new \Exception('Error al crear link de pago');
         }
+    }
+
+    public function showToken(): string
+    {
+        $this->init();
+
+        return MercadoPagoConfig::getAccessToken();
     }
 }

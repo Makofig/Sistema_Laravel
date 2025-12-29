@@ -13,6 +13,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/mp/success', fn () => 'OK')->name('mp.success');
+Route::get('/mp/failure', fn () => 'FAIL')->name('mp.failure');
+Route::get('/mp/pending', fn () => 'PENDING')->name('mp.pending');
+Route::post('/mp/webhook', fn () => 'WEBHOOK')->name('mp.webhook');
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
