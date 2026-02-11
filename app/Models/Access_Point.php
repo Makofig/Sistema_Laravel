@@ -17,7 +17,7 @@ class Access_Point extends Model
     ];
 
     // Relación con el modelo de clientes uno a muchos
-    public function clientes()
+    public function clients()
     {
         return $this->hasMany(Client::class, 'id_point');
     }

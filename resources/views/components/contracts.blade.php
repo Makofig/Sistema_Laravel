@@ -41,6 +41,16 @@
                 })
                 </script>
                 @endif
+                <!-- Error Alert -->
+                @if(session('error'))
+                <script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'No se puede eliminar',
+                    text: "{{ session('error') }}",
+                });
+                </script>
+                @endif
                 <!-- Search and Filter -->
                 <div class="mt-6 flex flex-col sm:flex-row gap-4">
                     <div class="relative flex-grow">
@@ -98,7 +108,7 @@
                                 <div class="text-sm text-gray-900">$ {{ number_format($contract->costo, 2, ',', '.') }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="px-2 text-xs inline-flex rounded-full bg-green-100 text-green-800">{{ $contract->cliente->count() }}</div>
+                                <div class="px-2 text-xs inline-flex rounded-full bg-green-100 text-green-800">{{ $contract->clients->count() }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">

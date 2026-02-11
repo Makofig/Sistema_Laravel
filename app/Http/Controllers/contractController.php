@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Contracts; 
 use Illuminate\Http\Request;
+use App\Models\Client;
 
 class contractController extends Controller
 {
@@ -102,6 +103,15 @@ class contractController extends Controller
     {
         // Eliminar un contrato seleccionado
         $contract = Contracts::findOrFail($id);
+
+        // Contar los clientes asociados a este contrato 
+        $clientsCount = Client::where('id_plan', $contract->id)->count();
+
+        if ($clientsCount > 0) {
+            return redirect()
+                ->route('contracts')
+                ->with('error', "Cannot delete contract {$contract->nombre} because it has associated {$clientsCount} clients.");
+        }
 
 
         $contract->delete();

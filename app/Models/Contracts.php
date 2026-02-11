@@ -16,7 +16,7 @@ class Contracts extends Model
     ]; 
 
     // Relación con el modelo cliente uno a muchos. 
-    public function cliente()
+    public function clients()
     {
         return $this->hasMany(Client::class, 'id_plan');
     }

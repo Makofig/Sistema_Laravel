@@ -35,7 +35,7 @@
                             <h3 class="text-lg font-semibold text-gray-800">{{ $access_point->ssid }}</h3>
                             <p class="text-gray-500">Frecuencia: {{ $access_point->frecuencia }}</p>
                             <p class="text-gray-500">IP: {{ $access_point->ip_ap }}</p>
-                            <p class="text-gray-500">Clientes: {{ $access_point->clientes->count() }}</p>
+                            <p class="text-gray-500">Clientes: {{ $access_point->clients->count() }}</p>
                             <p class="text-gray-500">Localidad: {{ $access_point->localidad }}</p>
 
                         </div>

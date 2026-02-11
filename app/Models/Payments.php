@@ -23,7 +23,7 @@ class Payments extends Model
     ]; 
 
     // Relación con el modelo de cliente uno a muchos 
-    public function cliente()
+    public function clients()
     {
         return $this->belongsTo(Client::class, 'id_cliente');
     }

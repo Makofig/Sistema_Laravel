@@ -78,7 +78,11 @@
                         <div class="text-sm text-gray-900">{{ $client->ip }}</div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">{{ $client->contract->megabytes }}</div>
+                        @if ($client->contract)
+                            <div class="text-sm text-gray-900">{{ $client->contract->megabytes }}</div>
+                        @else 
+                            <div class="text-sm text-gray-500">No Contract</div>
+                        @endif    
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="px-2 text-xs inline-flex rounded-full bg-green-100 text-green-800">{{ $client->paid_count }}</div>
