@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Access_Point;
 use Illuminate\Http\Request;
+use App\Models\Client;
 
 class access_pointController extends Controller
 {
@@ -110,6 +111,16 @@ class access_pointController extends Controller
     {
         // Eliminar un punto de acceso seleccionado
         $point = Access_Point::findOrFail($id);
+
+        $clientsCount = Client::where('id_point', $point->id)->count();
+
+        if ($clientsCount > 0) {
+            return redirect()
+                ->route('access-point')
+                ->with('error', "Cannot delete access point {$point->ssid} because it has associated {$clientsCount} clients.");
+        }
+
+
         $point->delete();
 
         return redirect()->route('access-point')->with('success', 'Acceess Point successfully removed.');
