@@ -8,6 +8,7 @@ use App\Http\Controllers\contractController;
 use App\Http\Controllers\access_pointController;
 use App\Http\Controllers\paymentController;
 use App\Http\Controllers\quotaController;
+use App\Livewire\QuotaCreate;
 
 Route::get('/', function () {
     return view('welcome');
@@ -81,7 +82,8 @@ Route::middleware([
     'throttle:auth-users',
 ])->prefix('quota')->group(function () {
     Route::get('/', [quotaController::class, 'index'])->name('quota');
-    Route::get('/create', [quotaController::class, 'create'])->name('quota.create');
+    Route::get('/create', QuotaCreate::class)->name('quota.create');
+    #Route::get('/create', [quotaController::class, 'create'])->name('quota.create');
     Route::post('/store', [quotaController::class, 'store'])->name('quota.store');
 });
 

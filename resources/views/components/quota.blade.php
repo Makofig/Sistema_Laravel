@@ -25,7 +25,7 @@
                         <p class="text-gray-500 mt-1">Manage your quotas</p>
                     </div>
                     <div class="mt-4 md:mt-0">
-                        <a href="{{ route('quota.create') }}" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-lg transition duration-150 ease-in-out">
+                        <a wire:navigate href="{{ route('quota.create') }}" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-lg transition duration-150 ease-in-out">
                             Add Quota
                         </a>
                     </div>

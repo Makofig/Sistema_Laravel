@@ -20,7 +20,6 @@ class Dashboard extends Component
     public $topDebtors;
     public $topPayers;
     public $totalMegabytesUsed; 
-    public $cache; 
 
     public function cacheData() {
         return cache()->remember('stast_global', 30, function() {
@@ -69,15 +68,16 @@ class Dashboard extends Component
     {
         
         $data = $this->cacheData();
-        $this->totalClients = $data['totalClients'];
-        $this->totalPayments = $data['totalPayments'];
-        $this->totalPaid = $data['totalPaid'];
-        $this->totalDebt = $data['totalDebt'];
-        $this->paymentsPerMonth = $data['paymentsPerMonth'];
-        $this->paymentStatuses = $data['paymentStatuses'];
-        $this->topDebtors = $data['topDebtors'];
-        $this->topPayers = $data['topPayers'];
-        $this->totalMegabytesUsed = $data['totalMegabytesUsed'];
+
+        foreach ($data as $key => $value) {
+             $this->$key = $value; 
+        }
+
+        $this->dispatch('refreshCharts', [
+            'paymentsPerMonth' => $this->paymentsPerMonth,
+            'paymentStatuses' => $this->paymentStatuses,
+        ]);
+       
     }
 
     public function render()

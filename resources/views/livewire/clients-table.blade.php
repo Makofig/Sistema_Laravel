@@ -10,6 +10,19 @@
     })
     </script>
     @endif
+    <div 
+        wire:loading.delay
+        wire:target="search, id_plan, previousPage, nextPage, gotoPage"
+        class="fixed inset-0 min-h-screen bg-slate-900/40 backdrop-blur-md items-center flex justify-center z-[9999]">
+
+        <div class="relative top-1/2 grid place-items-center">
+            <div class="animate-spin h-12 w-12 border-4 border-blue-600 border-t-transparent rounded-full mx-auto"></div>
+            <p class="mt-3 text-white font-semibold text-lg ">
+                Actualizando datos...
+            </p>
+        </div>
+
+    </div> 
     <!-- Search and Filter -->
     <div class="m-6 flex flex-col sm:flex-row gap-4">
         <div class="relative flex-grow">
@@ -27,7 +40,7 @@
             @endforeach
         </select>
     </div>
-    <div class="overflow-x-auto">
+    <div class="overflow-x-auto" wire:loading.class="opacity-50">
         <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">
                 <tr>
